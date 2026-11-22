@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bateria FE · Função Executiva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f0e6;--panel:#fffaf1;--panel2:#f1eadb;--ink:#2a2520;--ink2:#6b5f4e;--ink3:#9a8c78;
+  --line:rgba(60,45,20,.13);--accent:#9b7a3a;--accent2:#c8a96e;--dark:#171512;--dark2:#231f1a;
+  --ok:#3f8a56;--bad:#b9483a;--blue:#4f8fd8;--orange:#e0892e;--radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:'Jost',system-ui,sans-serif;font-weight:300;line-height:1.55;min-height:100vh}
+.wrap{max-width:780px;margin:0 auto;padding:14px 14px 40px}
+header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px 14px;padding:4px 2px 10px;border-bottom:1px solid var(--line)}
+h1{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:27px;letter-spacing:.01em}
+h1 small{font-family:'Jost';font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin-left:8px;font-weight:400}
+h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:23px;margin-bottom:8px}
+h3{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:500;margin:18px 0 8px}
+h4{font-size:13px;font-weight:500;margin:12px 0 4px;color:var(--ink)}
+nav{display:flex;gap:2px;flex-wrap:wrap}
+nav button{font:inherit;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:8px 10px;border:none;background:transparent;color:var(--ink3);cursor:pointer;border-bottom:2px solid transparent;font-weight:400}
+nav button.on{color:var(--accent);border-bottom-color:var(--accent)}
+.view{display:none}.view.on{display:block}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin:12px 0}
+.card.tight{padding:10px}
+p{margin:6px 0}
+.small{font-size:12px;color:var(--ink2)}
+.tiny{font-size:11px;color:var(--ink3)}
+.dim{opacity:.45}
+b{font-weight:500}
+label{display:block;font-size:12px;color:var(--ink2);margin:10px 0 4px}
+input[type=text]{font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;width:100%;max-width:320px;outline:none}
+.mods{display:grid;grid-template-columns:1fr;gap:6px;margin:8px 0 4px}
+.mod{display:flex;align-items:flex-start;gap:10px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer}
+.mod input{margin-top:5px}
+.mod .n{font-weight:500;font-size:14px}.mod .d{font-size:11px;color:var(--ink3)}
+.btn{font:inherit;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;padding:13px 20px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;margin-top:12px;min-width:160px;touch-action:manipulation}
+.btn.ghost{background:transparent;color:var(--accent)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.stage{background:var(--dark);color:#f3ecdc;border-radius:12px;height:min(48vh,380px);min-height:230px;display:flex;align-items:center;justify-content:center;position:relative;user-select:none;-webkit-user-select:none;touch-action:manipulation;overflow:hidden;transition:box-shadow .05s}
+.stage.cueA{box-shadow:inset 0 0 0 7px var(--blue)}
+.stage.cueB{box-shadow:inset 0 0 0 7px var(--orange)}
+.cue{position:absolute;top:14px;left:0;right:0;text-align:center;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
+.cue.a{color:#8fc0ff}.cue.b{color:#ffbf7a}
+.stim{font-weight:500;line-height:1;text-align:center;padding:0 10px}
+.stim.arrows{font-size:clamp(54px,15vw,100px);letter-spacing:.08em;font-family:'Jost';font-weight:400}
+.stim.letter{font-size:clamp(84px,24vw,150px)}
+.stim.word{font-size:clamp(34px,10vw,66px);letter-spacing:.06em;font-weight:600}
+.stim.fix{font-size:46px;font-weight:300;color:#b9ad96}
+.stim.entry{font-size:clamp(34px,9vw,56px);letter-spacing:.2em}
+.stim.prompt{font-size:16px;letter-spacing:.1em;text-transform:uppercase;color:#cfc3aa;font-weight:400}
+.fb{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:14px;letter-spacing:.1em;text-transform:uppercase;font-weight:500}
+.fb.ok{color:#8fd4a3}.fb.bad{color:#ff9a8a}
+.resp{display:grid;gap:10px;margin-top:10px;grid-template-columns:repeat(var(--n,2),1fr)}
+.rbtn{min-height:76px;font:inherit;font-size:20px;font-weight:500;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;line-height:1.1;padding:8px 4px}
+.rbtn:active{background:var(--panel2)}
+.rbtn small{font-size:11px;color:var(--ink3);font-weight:400;letter-spacing:.06em}
+.rbtn .sub{font-size:13px;color:var(--ink2);font-weight:400}
+.resp.kp{grid-template-columns:repeat(3,1fr);max-width:360px;margin-left:auto;margin-right:auto}
+.resp.kp .rbtn{min-height:58px;font-size:22px}
+.prog{height:3px;background:var(--line);margin-top:10px;border-radius:2px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--accent2);transition:width .2s}
+.modlabel{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-top:6px;display:flex;justify-content:space-between}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:6px 0 10px}
+th,td{padding:6px 7px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.norms{font-size:11.5px}table.norms th,table.norms td{padding:5px 4px}
+.metric{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13.5px}
+.metric:last-child{border-bottom:none}
+.metric .v{font-variant-numeric:tabular-nums;font-weight:500;white-space:nowrap;text-align:right}
+.metric .v small{font-weight:300;color:var(--ink3);font-size:11px}
+.domain{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
+.ref{font-size:11.5px;color:var(--ink2);background:var(--panel2);padding:7px 10px;border-radius:6px;margin-top:8px}
+.pill{display:inline-block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:10px;border:1px solid var(--line);color:var(--ink2);margin-left:6px;vertical-align:middle}
+.pill.ok{border-color:rgba(63,138,86,.4);color:var(--ok)}
+.pill.warn{border-color:rgba(185,72,58,.4);color:var(--bad)}
+textarea{width:100%;height:140px;font:12px/1.4 ui-monospace,Menlo,Consolas,monospace;border:1px solid var(--line);border-radius:8px;padding:8px;background:#fff;margin-top:8px}
+.refs li{margin:5px 0 5px 18px;font-size:12.5px;color:var(--ink2)}
+ul.plain li{margin:4px 0 4px 18px}
+.note{border-left:3px solid var(--accent2);padding:6px 10px;background:var(--panel2);font-size:12.5px;margin:10px 0;border-radius:0 6px 6px 0}
+@media(max-width:480px){html{font-size:14px}.card{padding:14px}.wrap{padding:10px 10px 40px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Bateria FE <small>função executiva · v1.1</small></h1>
+  <nav>
+    <button class="on" data-v="test" onclick="go('test')">Teste</button>
+    <button data-v="results" onclick="go('results')">Resultados</button>
+    <button data-v="protocol" onclick="go('protocol')">Protocolo</button>
+    <button data-v="refs" onclick="go('refs')">Referências</button>
+  </nav>
+</header>
+
+<section class="view on" id="view-test"></section>
+<section class="view" id="view-results"><div class="card"><p class="small">Nenhuma sessão concluída ainda. Complete a bateria na aba Teste.</p></div></section>
+
+<section class="view" id="view-protocol">
+<div class="card">
+<h2>Protocolo</h2>
+<p class="small">Administração e escore padronizados. A bateria não tem normas populacionais próprias: a comparação legítima é (a) contra normas locais acumuladas, (b) contra baterias amplas num estudo de validade convergente, cujo desenho está na seção 5.</p>
+
+<h3>1. O que a bateria mede</h3>
+<p>Organização pelo modelo <b>unidade/diversidade</b> (Miyake et al., 2000; Friedman &amp; Miyake, 2017): três famílias de processos — controle atencional/inibição, atualização da memória de trabalho e alternância — sobre um fator comum (EF comum) que carrega a maior parte da variância. Leitura prudente: a parcela "inibição‑específica" tende a colapsar no fator comum (Friedman &amp; Miyake, 2017), tarefas de inibição correlacionam fracamente entre si (Rey‑Mermet, Gade &amp; Oberauer, 2018) e a estrutura de três fatores replica mal em reanálise sistemática (Karr et al., 2018). Os três índices de inibição devem ser lidos como indicadores do <b>controle atencional geral</b>, não de uma habilidade separável.</p>
+<table>
+<tr><th>Domínio</th><th>Módulo</th><th>Índice primário</th><th>Secundários</th></tr>
+<tr><td>Controle atencional</td><td>Flanker (setas)</td><td>Efeito de congruência em RT (incong − cong)</td><td>Erro diferencial, IES, escore computado tipo NIH Toolbox</td></tr>
+<tr><td>Controle atencional</td><td>Stroop (cores)</td><td>Efeito de interferência em RT</td><td>Erro diferencial, IES</td></tr>
+<tr><td>Inibição de resposta</td><td>Go/No‑Go</td><td>Taxa de comissões</td><td>d′, omissões, RT go</td></tr>
+<tr><td>Atualização (MT)</td><td>2‑back (letras)</td><td>d′ (alvos vs. não‑alvos + iscas)</td><td>Taxa de acerto, FA em iscas, RT</td></tr>
+<tr><td>Atualização (MT) · carga alta</td><td>3‑back (letras)</td><td>d′ (alvos vs. não‑alvos + iscas)</td><td>d′ contra iscas, FA em iscas 2‑/4‑back, custo de carga vs. 2‑back, d′ por bloco</td></tr>
+<tr><td>Memória de trabalho</td><td>Span de dígitos inverso</td><td>LDSB (maior span correto)</td><td>Total de ensaios corretos</td></tr>
+<tr><td>Alternância</td><td>Troca de tarefa (paridade/magnitude)</td><td>Custo de troca em RT (switch − repeat)</td><td>Custo de mistura, custos em erro</td></tr>
+</table>
+
+<h3>2. Administração padronizada</h3>
+<table>
+<tr><th>Módulo</th><th>Ensaios (teste)</th><th>Estrutura</th><th>Janela</th><th>ITI</th></tr>
+<tr><td>Flanker</td><td>96 (48/48)</td><td>5 setas, resposta à central; fixação 400 ms</td><td>1500 ms</td><td>500–900 ms</td></tr>
+<tr><td>Stroop</td><td>72 (36/36)</td><td>4 cores/palavras, resposta à cor da tinta; botões em ordem fixa</td><td>2000 ms</td><td>500–900 ms</td></tr>
+<tr><td>Go/No‑Go</td><td>120 (25% no‑go = X)</td><td>Letra 400 ms na tela</td><td>1000 ms</td><td>600–1000 ms</td></tr>
+<tr><td>2‑back</td><td>70 (30% alvos, 10% iscas 1‑/3‑back)</td><td>Letra 500 ms; 8 consoantes</td><td>2500 ms (ensaio inteiro)</td><td>—</td></tr>
+<tr><td>3‑back</td><td>3 blocos × 40 pontuados (+ 3 de entrada): 36 alvos, 12 iscas 2‑back, 12 iscas 4‑back, 60 não‑alvos</td><td>Letra 500 ms; 8 consoantes; contagens fixas por bloco; no máx. 2 alvos seguidos</td><td>2500 ms (ensaio inteiro)</td><td>—</td></tr>
+<tr><td>Span inverso</td><td>2 por comprimento, 2→9</td><td>Dígito 800 ms + 300 ms; interrupção após 2 falhas no mesmo comprimento (regra WAIS)</td><td>livre</td><td>—</td></tr>
+<tr><td>Alternância</td><td>24 + 24 puros, 96 misto (p(troca)=.5)</td><td>Pista simultânea (cor + rótulo), CSI 0; fixação 300 ms</td><td>2500 ms</td><td>500–900 ms</td></tr>
+</table>
+<p class="small">Fixos: ordem dos módulos, número de ensaios, janelas, proporções, mapeamento de resposta, prática com feedback (repetível quando &lt; 60%). Registrar: dispositivo (toque/teclado), horário, ambiente. Não alternar de aba durante os ensaios. Tempo total ≈ 35–40 min (≈ 28–32 sem o 3‑back).</p>
+
+<h3>3. Escores</h3>
+<ul class="plain small">
+<li><b>RT</b>: mediana dos acertos com RT ≥ 150 ms; timeouts e antecipações excluídos do RT e contados à parte.</li>
+<li><b>Efeito de congruência</b> = RT<sub>incong</sub> − RT<sub>cong</sub> (medianas). IC 95% individual calculado sobre médias: 1,96·√(s²<sub>I</sub>/n<sub>I</sub> + s²<sub>C</sub>/n<sub>C</sub>). Um IC largo diz que a sessão não distingue esse indivíduo da média — o problema central de escores‑diferença (Hedge et al., 2018; Rouder &amp; Haaf, 2019).</li>
+<li><b>IES</b> (escore de eficiência inversa) = RT médio / proporção de acertos, por condição (Townsend &amp; Ashby, 1983); reportada a diferença. Mitiga trocas velocidade‑acurácia, não as elimina (Liesefeld &amp; Janczyk, 2019).</li>
+<li><b>d′</b> = z(acertos) − z(falsos alarmes) com correção log‑linear (Hautus, 1995).</li>
+<li><b>3‑back</b>: mesmo d′ do 2‑back, mais o <b>d′ contra iscas</b> = z(acertos) − z(falsos alarmes só em iscas). Uma letra vista há 2 ou 4 posições é familiar; só a rejeita quem mantém a ordem serial, não quem responde por familiaridade (Gray, Chabris &amp; Braver, 2003; Kane et al., 2007). <b>Custo de carga</b> = d′<sub>2‑back</sub> − d′<sub>3‑back</sub> na mesma sessão, calculado só quando nenhuma das duas está no teto: o d′ máximo depende do número de ensaios, que difere entre as tarefas, e a diferença entre dois tetos é artefato. As contagens fixas tornam o teto conhecido: com a correção log‑linear, d′ máximo ≈ 4,73 (global) e ≈ 4,26 (contra iscas). Sessão com 100% de acertos e nenhum falso alarme é marcada como <b>teto</b>: não discrimina acima daquele nível.</li>
+<li><b>Escore computado tipo NIH Toolbox (Flanker)</b>: 5·acurácia + [se acurácia &gt; 80%] 5 − 5·(ln RT − ln 500)/(ln 3000 − ln 500), RT = mediana dos incongruentes corretos truncada a [500, 3000] ms. Escala 0–10, mesma lógica do manual de escore do Toolbox (Zelazo et al., 2014). Permite comparação direta com o escore não corrigido do Flanker do Toolbox, com a ressalva de latência de dispositivo.</li>
+<li><b>Custo de troca</b> = RT<sub>switch</sub> − RT<sub>repeat</sub> (bloco misto); <b>custo de mistura</b> = RT<sub>repeat</sub> − RT<sub>puro</sub> (Monsell, 2003). Ambos também em erro.</li>
+<li><b>LDSB</b> = maior comprimento com ≥ 1 ensaio correto; total correto de 0 a 16.</li>
+<li><b>Normas locais</b>: percentil empírico e z contra as sessões salvas neste navegador (a partir de n = 10). Composto por domínio = média dos z (sinal invertido para custos e taxas de erro); <b>EF comum</b> = média dos compostos. Percentis estáveis ao nível de decil exigem n ≳ 100–200.</li>
+<li><b>Confiabilidade</b>: por sessão, IC individual; entre sessões (n ≥ 10), split‑half ímpar/par com correção de Spearman–Brown para cada efeito. Esperar valores modestos (.4–.7) para escores‑diferença mesmo com a tarefa funcionando.</li>
+</ul>
+
+<h3>4. Comparação com baterias amplas (crosswalk)</h3>
+<table>
+<tr><th>Módulo</th><th>Contrapartes estabelecidas</th><th>r esperado</th><th>Nota</th></tr>
+<tr><td>Flanker</td><td>NIH Toolbox Flanker Inhibitory Control; D‑KEFS Color‑Word cond. 3</td><td class="num">.50–.70<br>.35–.55</td><td>Mesmo paradigma do Toolbox; escore computado comparável</td></tr>
+<tr><td>Stroop</td><td>D‑KEFS Color‑Word cond. 3 (tempo); Victoria Stroop; Toolbox Flanker</td><td class="num">.40–.60</td><td>Versões orais vs. manuais compartilham interferência, não o modo de resposta</td></tr>
+<tr><td>Go/No‑Go</td><td>CPT‑3 (comissões); Stop‑Signal (SSRT)</td><td class="num">.30–.50</td><td>Taxa de comissões tem ICC ≈ .76 em Hedge et al. (2018), a melhor da família</td></tr>
+<tr><td>2‑back</td><td>NIH Toolbox List Sorting; WAIS‑IV Sequência de Números e Letras; spans complexos</td><td class="num">.20–.40</td><td>n‑back e span complexo correlacionam ≈ .20 (Redick &amp; Lindsey, 2013): são medidas diferentes de MT</td></tr>
+<tr><td>3‑back</td><td>Spans complexos (operação, simetria); Matrizes / Raven</td><td class="num">.15–.30<br>.30–.45</td><td>Correlação fraca com span, mas variância própria em Gf (Kane et al., 2007); mais informativo em carga alta (Jaeggi et al., 2010)</td></tr>
+<tr><td>Span inverso</td><td>WAIS‑IV Dígitos — ordem inversa (LDSB)</td><td class="num">.60–.80</td><td>Mesma tarefa; normas WAIS transferem com cautela (dígitos visuais vs. orais)</td></tr>
+<tr><td>Alternância</td><td>NIH Toolbox DCCS; TMT‑B (B − A); D‑KEFS Trail Making cond. 4</td><td class="num">.30–.50</td><td>TMT mistura velocidade visuomotora e busca visual</td></tr>
+<tr><td>Composto EF</td><td>Raciocínio fluido (Matrizes / Raven)</td><td class="num">.40–.60</td><td>Controle atencional e Gf são fortemente relacionados (Draheim et al., 2021); incluir Gf para separar EF comum de g</td></tr>
+<tr><td>Todos</td><td>BRIEF‑A, BDEFS, Barkley (autorrelato)</td><td class="num">.10–.20</td><td>Validade <i>discriminante</i>, não convergente: mediana r = .19 em Toplak et al. (2013); autorrelato acompanha Neuroticismo e baixa Conscienciosidade, não desempenho (Buchanan, 2016)</td></tr>
+</table>
+<p class="small">Os valores de r são expectativas a priori para registro prévio (pré‑registro) do estudo de validação, não resultados.</p>
+
+<h3>5. Plano de validação</h3>
+<ul class="plain small">
+<li><b>Amostra</b>: n ≥ 85 detecta r = .30 com α = .05 e poder .80; n ≥ 30 basta para r = .50. Para o crosswalk completo, mirar n ≈ 100–120 adultos, mesma classe de dispositivo.</li>
+<li><b>Desenho</b>: sessão 1 = Bateria FE + bateria externa (ordem contrabalanceada); sessão 2 (2–4 semanas) = Bateria FE novamente para teste‑reteste (ICC(2,1)); autorrelato (BRIEF‑A) na sessão 1.</li>
+<li><b>Exclusões pré‑definidas</b>: acurácia global &lt; 60% em qualquer módulo de conflito, &gt; 20% de timeouts, acurácia em congruentes &lt; 70%, mudança de dispositivo entre sessões.</li>
+<li><b>Análises</b>: correlações convergentes/discriminantes por módulo; confiabilidade (ICC, split‑half); comparação pré‑registrada entre escores‑diferença, IES e escores de acurácia quanto à confiabilidade; modelo de variável latente com três fatores vs. fator único vs. bifactor (EF comum + específicos) — esperar que o fator único ou bifactor vença.</li>
+<li><b>Correção de atenuação</b>: interpretar r observado à luz das confiabilidades (r<sub>xy</sub>/√(r<sub>xx</sub>·r<sub>yy</sub>)) antes de concluir que dois instrumentos medem coisas diferentes.</li>
+<li><b>Dados</b>: exportar JSON/CSV ao fim de cada sessão (aba Resultados) e consolidar fora do navegador; o armazenamento local serve só a normas provisórias.</li>
+</ul>
+
+<h3>6. Limitações e explicações alternativas</h3>
+<ul class="plain small">
+<li><b>Paradoxo da confiabilidade</b> (Hedge, Powell &amp; Sumner, 2018): efeitos robustos no grupo com variância individual pequena produzem ICCs baixos — Stroop ≈ .60–.67, nenhuma das quatro tarefas de conflito atingiu .80. Enkavi et al. (2019) replicam em grande escala: medidas de tarefa são menos confiáveis que questionários. Consequência: uma sessão não classifica indivíduos com precisão; três sessões agregadas ou n de ensaios maior melhoram.</li>
+<li><b>O que as tarefas de conflito medem</b>: a diferença RT pode refletir velocidade de processamento e estratégia (ênfase em velocidade vs. acurácia) tanto quanto "controle" (Hedge et al., 2022). Daí a IES e os escores de acurácia ao lado do efeito bruto.</li>
+<li><b>Temporização em navegador e toque</b>: latências absolutas de dezenas de ms e variância por dispositivo (Bridges et al., 2020; Anwyl‑Irvine et al., 2021). Contrastes intra‑sujeito (efeitos, custos) são robustos a isso; RTs absolutos e o escore tipo NIH não — comparar apenas dentro da mesma classe de dispositivo. Replicações online de Stroop, flanker e troca de tarefa são sólidas (Crump et al., 2013).</li>
+<li><b>Efeitos de prática</b>: em reteste, efeitos diminuem e spans sobem; normas locais devem separar primeira sessão de repetições.</li>
+<li><b>Divergência com autorrelato</b>: tarefas medem desempenho ótimo em contexto artificial; questionários medem desempenho típico percebido, contaminado por personalidade. Ambos têm valor preditivo próprio (Dang, King &amp; Inzlicht, 2020; Snyder, Friedman &amp; Hankin, 2021); um não valida o outro.</li>
+<li><b>O que o 3‑back resolve e o que não resolve</b>: tira o teto do 2‑back e, com as iscas, separa atualização de resposta por familiaridade. Não transforma n‑back em medida de capacidade: no nível da tarefa, n‑back e span complexo correlacionam ≈ .20 (Redick &amp; Lindsey, 2013), e a confiabilidade do n‑back para diferenças individuais é o seu ponto fraco (Jaeggi et al., 2010) — daí os 120 ensaios pontuados e o split‑half. No nível latente os dois paradigmas convergem (Schmiedek, Lövdén &amp; Lindenberger, 2014): a leitura de memória de trabalho deve juntar 3‑back e span, nunca um só. Ensaio subvocal de janelas de três letras e prática repetida elevam o escore sem elevar a capacidade.</li>
+<li><b>Sem normas próprias</b>: as faixas "típicas" exibidas nos resultados são orientação a partir da literatura em adultos jovens/meia‑idade, não normas desta implementação.</li>
+</ul>
+
+<h3>7. Caminhos para a v2</h3>
+<ul class="plain small">
+<li>Trocar os escores‑diferença por tarefas <b>baseadas em acurácia com prazo adaptativo</b> (Draheim et al., 2021) ou pelas tarefas <b>"Squared"</b> (Burgoyne et al., 2023): ≈ 3 min cada, consistência interna ≈ .95, reteste ≈ .67, carga ≈ .70 no fator de controle atencional. Ganho de ~3–5× em variância confiável e preditiva sobre Stroop/flanker clássicos.</li>
+<li>Stop‑Signal com escada (Verbruggen et al., 2019) no lugar do Go/No‑Go, se houver 7–8 min a mais: SSRT é o índice canônico de inibição de resposta.</li>
+<li>Span complexo (operação ou simetria) ao lado do 2‑back, para cobrir as duas faces da memória de trabalho.</li>
+<li>Escore baseado em modelo (difusão) para separar velocidade, cautela e eficiência (Hedge et al., 2022), e confiabilidade por modelos hierárquicos (Rouder &amp; Haaf, 2019).</li>
+</ul>
+</div>
+</section>
+
+<section class="view" id="view-refs">
+<div class="card">
+<h2>Referências</h2>
+<ol class="refs">
+<li>Anwyl‑Irvine, A., Dalmaijer, E. S., Hodges, N., &amp; Evershed, J. K. (2021). Realistic precision and accuracy of online experiment platforms, web browsers, and devices. <i>Behavior Research Methods, 53</i>, 1407–1425.</li>
+<li>Bridges, D., Pitiot, A., MacAskill, M. R., &amp; Peirce, J. W. (2020). The timing mega‑study: Comparing a range of experiment generators, both lab‑based and online. <i>PeerJ, 8</i>, e9414.</li>
+<li>Buchanan, T. (2016). Self‑report measures of executive function problems correlate with personality, not performance‑based executive function measures, in nonclinical samples. <i>Psychological Assessment, 28</i>(4), 372–385.</li>
+<li>Burgoyne, A. P., Tsukahara, J. S., Mashburn, C. A., Pak, R., &amp; Engle, R. W. (2023). Nature and measurement of attention control. <i>Journal of Experimental Psychology: General, 152</i>(8).</li>
+<li>Crump, M. J. C., McDonnell, J. V., &amp; Gureckis, T. M. (2013). Evaluating Amazon's Mechanical Turk as a tool for experimental behavioral research. <i>PLoS ONE, 8</i>(3), e57410.</li>
+<li>Dang, J., King, K. M., &amp; Inzlicht, M. (2020). Why are self‑report and behavioral measures weakly correlated? <i>Trends in Cognitive Sciences, 24</i>(4), 267–269.</li>
+<li>Delis, D. C., Kaplan, E., &amp; Kramer, J. H. (2001). <i>Delis–Kaplan Executive Function System (D‑KEFS)</i>. Pearson.</li>
+<li>Diamond, A. (2013). Executive functions. <i>Annual Review of Psychology, 64</i>, 135–168.</li>
+<li>Draheim, C., Tsukahara, J. S., Martin, J. D., Mashburn, C. A., &amp; Engle, R. W. (2021). A toolbox approach to improving the measurement of attention control. <i>Journal of Experimental Psychology: General, 150</i>(2), 242–275.</li>
+<li>Enkavi, A. Z., Eisenberg, I. W., Bissett, P. G., Mazza, G. L., MacKinnon, D. P., Marsch, L. A., &amp; Poldrack, R. A. (2019). Large‑scale analysis of test–retest reliabilities of self‑regulation measures. <i>PNAS, 116</i>(12), 5472–5477.</li>
+<li>Friedman, N. P., &amp; Miyake, A. (2017). Unity and diversity of executive functions: Individual differences as a window on cognitive structure. <i>Cortex, 86</i>, 186–204.</li>
+<li>Gray, J. R., Chabris, C. F., &amp; Braver, T. S. (2003). Neural mechanisms of general fluid intelligence. <i>Nature Neuroscience, 6</i>(3), 316–322.</li>
+<li>Hautus, M. J. (1995). Corrections for extreme proportions and their biasing effects on estimated values of d′. <i>Behavior Research Methods, Instruments, &amp; Computers, 27</i>, 46–51.</li>
+<li>Hedge, C., Powell, G., &amp; Sumner, P. (2018). The reliability paradox: Why robust cognitive tasks do not produce reliable individual differences. <i>Behavior Research Methods, 50</i>(3), 1166–1186.</li>
+<li>Hedge, C., Powell, G., Bompas, A., &amp; Sumner, P. (2022). Strategy and processing speed eclipse individual differences in control ability in conflict tasks. <i>Memory &amp; Cognition, 50</i>, 112–132.</li>
+<li>Jaeggi, S. M., Buschkuehl, M., Perrig, W. J., &amp; Meier, B. (2010). The concurrent validity of the N‑back task as a working memory measure. <i>Memory, 18</i>(4), 394–412.</li>
+<li>Kane, M. J., Conway, A. R. A., Miura, T. K., &amp; Colflesh, G. J. H. (2007). Working memory, attention control, and the N‑back task: A question of construct validity. <i>Journal of Experimental Psychology: Learning, Memory, and Cognition, 33</i>(3), 615–622.</li>
+<li>Karr, J. E., Areshenkoff, C. N., Rast, P., Hofer, S. M., Iverson, G. L., &amp; Garcia‑Barrera, M. A. (2018). The unity and diversity of executive functions: A systematic review and re‑analysis of latent variable studies. <i>Psychological Bulletin, 144</i>(11), 1147–1185.</li>
+<li>Liesefeld, H. R., &amp; Janczyk, M. (2019). Combining speed and accuracy to control for speed–accuracy trade‑offs(?). <i>Behavior Research Methods, 51</i>, 40–60.</li>
+<li>Miyake, A., Friedman, N. P., Emerson, M. J., Witzki, A. H., Howerter, A., &amp; Wager, T. D. (2000). The unity and diversity of executive functions and their contributions to complex "frontal lobe" tasks: A latent variable analysis. <i>Cognitive Psychology, 41</i>(1), 49–100.</li>
+<li>Monsell, S. (2003). Task switching. <i>Trends in Cognitive Sciences, 7</i>(3), 134–140.</li>
+<li>Redick, T. S., &amp; Lindsey, D. R. B. (2013). Complex span and n‑back measures of working memory: A meta‑analysis. <i>Psychonomic Bulletin &amp; Review, 20</i>, 1102–1113.</li>
+<li>Rey‑Mermet, A., Gade, M., &amp; Oberauer, K. (2018). Should we stop thinking about inhibition? Searching for individual and age differences in inhibition ability. <i>Journal of Experimental Psychology: Learning, Memory, and Cognition, 44</i>(4), 501–526.</li>
+<li>Rouder, J. N., &amp; Haaf, J. M. (2019). A psychometrics of individual differences in experimental tasks. <i>Psychonomic Bulletin &amp; Review, 26</i>, 452–467.</li>
+<li>Schmiedek, F., Lövdén, M., &amp; Lindenberger, U. (2014). A task is a task is a task: Putting complex span, n‑back, and other working memory indicators in psychometric context. <i>Frontiers in Psychology, 5</i>, 1475.</li>
+<li>Snyder, H. R., Friedman, N. P., &amp; Hankin, B. L. (2021). Associations between task performance and self‑report measures of cognitive control: Shared versus distinct abilities. <i>Assessment, 28</i>(4), 1080–1096.</li>
+<li>Toplak, M. E., West, R. F., &amp; Stanovich, K. E. (2013). Practitioner Review: Do performance‑based measures and ratings of executive function assess the same construct? <i>Journal of Child Psychology and Psychiatry, 54</i>(2), 131–143.</li>
+<li>Townsend, J. T., &amp; Ashby, F. G. (1983). <i>Stochastic modeling of elementary psychological processes</i>. Cambridge University Press.</li>
+<li>Verbruggen, F., et al. (2019). A consensus guide to capturing the ability to inhibit actions and impulsive behaviors in the stop‑signal task. <i>eLife, 8</i>, e46323.</li>
+<li>Wechsler, D. (2008). <i>Wechsler Adult Intelligence Scale — Fourth Edition (WAIS‑IV)</i>. Pearson.</li>
+<li>Zelazo, P. D., Anderson, J. E., Richler, J., Wallner‑Allen, K., Beaumont, J. L., Conway, K. P., Gershon, R., &amp; Weintraub, S. (2014). NIH Toolbox Cognition Battery (CB): Validation of executive function measures in adults. <i>Journal of the International Neuropsychological Society, 20</i>(6), 620–629.</li>
+</ol>
+</div>
+</section>
+</div>
+
+<script>
+'use strict';
+/* ───────────────────────── utilitários ───────────────────────── */
+const $=s=>document.querySelector(s);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const FAST=()=>!!window.FE_FAST;           // gancho de teste automatizado
+const tm=ms=>FAST()?Math.min(ms,20):ms;      // durações de apresentação
+const tmD=ms=>FAST()?400:ms;                 // janelas de resposta
+const NT=n=>FAST()?Math.max(8,Math.round(n/8)):n;
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const TOUCH=matchMedia('(pointer:coarse)').matches;
+function median(a){if(!a.length)return NaN;const s=[...a].sort((x,y)=>x-y),m=Math.floor(s.length/2);return s.length%2?s[m]:(s[m-1]+s[m])/2}
+function mean(a){return a.length?a.reduce((x,y)=>x+y,0)/a.length:NaN}
+function sd(a){if(a.length<2)return NaN;const m=mean(a);return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/(a.length-1))}
+function pearson(x,y){const n=x.length;if(n<3)return NaN;const mx=mean(x),my=mean(y);let sxy=0,sxx=0,syy=0;for(let i=0;i<n;i++){sxy+=(x[i]-mx)*(y[i]-my);sxx+=(x[i]-mx)**2;syy+=(y[i]-my)**2}return sxy/Math.sqrt(sxx*syy)}
+function zinv(p){if(p<=0)return -Infinity;if(p>=1)return Infinity;
+ const a=[-3.969683028665376e+01,2.209460984245205e+02,-2.759285104469687e+02,1.383577518672690e+02,-3.066479806614716e+01,2.506628277459239e+00],
+ b=[-5.447609879822406e+01,1.615858368580409e+02,-1.556989798598866e+02,6.680131188771972e+01,-1.328068155288572e+01],
+ c=[-7.784894002430293e-03,-3.223964580411365e-01,-2.400758277161838e+00,-2.549732539343734e+00,4.374664141464968e+00,2.938163982698783e+00],
+ d=[7.784695709041462e-03,3.224671290700398e-01,2.445134137142996e+00,3.754408661907416e+00];
+ const pl=0.02425,ph=1-pl;let q,r;
+ if(p<pl){q=Math.sqrt(-2*Math.log(p));return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)}
+ if(p<=ph){q=p-0.5;r=q*q;return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1)}
+ q=Math.sqrt(-2*Math.log(1-p));return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)}
+const fmt=(v,d=0)=>(v==null||Number.isNaN(v)||!Number.isFinite(v))?'—':v.toFixed(d).replace('.',',');
+const pct=(v,d=0)=>(v==null||Number.isNaN(v))?'—':(100*v).toFixed(d).replace('.',',')+'%';
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+/* ───────────────────────── estado ───────────────────────── */
+const MODULES=[
+ {id:'flanker',name:'Flanker (setas)',domain:'Controle atencional',min:4},
+ {id:'stroop',name:'Stroop (cores)',domain:'Controle atencional · interferência',min:4},
+ {id:'gng',name:'Go/No‑Go',domain:'Inibição de resposta',min:3},
+ {id:'nback',name:'2‑back (letras)',domain:'Atualização · memória de trabalho',min:3},
+ {id:'nback3',name:'3‑back (letras)',domain:'Memória de trabalho · carga alta',min:8},
+ {id:'span',name:'Span de dígitos inverso',domain:'Memória de trabalho',min:3},
+ {id:'switch',name:'Alternância de tarefa',domain:'Flexibilidade · shifting',min:5},
+];
+const WM_MODULES=['nback','nback3','span'];
+let SESSION=null;
+window.__FE={current:null,onTrial:null,summary:null};
+const LS_KEY='fe_bateria_v1';
+function loadLocal(){try{const a=JSON.parse(localStorage.getItem(LS_KEY)||'[]');return Array.isArray(a)?a:[]}catch(e){return[]}}
+function saveLocal(s){try{const a=loadLocal();a.push(s);localStorage.setItem(LS_KEY,JSON.stringify(a))}catch(e){}}
+
+/* ───────────────────────── navegação ───────────────────────── */
+function go(v){document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='view-'+v));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));window.scrollTo(0,0)}
+
+/* ───────────────────────── tela inicial ───────────────────────── */
+function renderStart(){
+  const local=loadLocal();
+  $('#view-test').innerHTML=`<div class="card">
+  <h2>Bateria de função executiva</h2>
+  <p>Sete tarefas computadorizadas, ≈ 35–40 min, cobrindo controle atencional, inibição de resposta, memória de trabalho e alternância. Administração e escore fixos; comparação por normas locais e por crosswalk com baterias amplas (aba Protocolo).</p>
+  <p class="small">Condições: ambiente silencioso, sem interrupções, tela com brilho normal. ${TOUCH?'No celular, segure o aparelho com as duas mãos e responda com os polegares.':'No computador, mantenha os dedos sobre as teclas indicadas (F / J, ou 1–4 no Stroop).'} Não troque de aba durante os ensaios.</p>
+  <label for="pid">Identificador da sessão (opcional)</label><input type="text" id="pid" placeholder="ex.: S‑01" autocomplete="off">
+  <label>Módulos <span class="tiny">· <a href="#" id="selall">todos</a> · <a href="#" id="selwm">só memória de trabalho</a></span></label>
+  <div class="mods">${MODULES.map(m=>`<label class="mod"><input type="checkbox" data-m="${m.id}" checked><span><div class="n">${m.name} <span class="tiny">≈ ${m.min} min</span></div><div class="d">${m.domain}</div></span></label>`).join('')}</div>
+  <p class="tiny">Dispositivo detectado: ${TOUCH?'toque':'teclado'} · ${screen.width}×${screen.height} · amostra local salva neste navegador: n = ${local.length}</p>
+  <button class="btn" id="start">Iniciar</button>
+  </div>`;
+  $('#start').onclick=startBattery;
+  const sel=f=>e=>{e.preventDefault();document.querySelectorAll('.mod input').forEach(i=>i.checked=f(i.dataset.m))};
+  $('#selall').onclick=sel(()=>true);$('#selwm').onclick=sel(m=>WM_MODULES.includes(m));
+}
+
+/* ───────────────────────── palco de ensaios ───────────────────────── */
+let responder=null,KEYS={};
+function buildStage(label){
+  $('#view-test').innerHTML=`<div class="card tight"><div class="stage" id="stage"><div class="cue" id="cue"></div><div class="stim" id="stim"></div><div class="fb" id="fb"></div></div><div class="resp" id="resp"></div><div class="prog"><i id="progbar"></i></div><div class="modlabel"><span>${label}</span><span id="progtxt"></span></div></div>`;
+}
+function setStim(content,cls,html=false){const s=$('#stim');if(!s)return;s.className='stim '+(cls||'');if(html)s.innerHTML=content;else s.textContent=content}
+function clearStim(){const s=$('#stim');if(s){s.textContent='';s.className='stim'}}
+function setCue(txt,cls){const c=$('#cue'),st=$('#stage');if(!c)return;c.textContent=txt||'';c.className='cue '+(cls||'');st.className='stage '+(cls==='a'?'cueA':cls==='b'?'cueB':'')}
+function prog(i,n){const b=$('#progbar'),t=$('#progtxt');if(b)b.style.width=(100*i/n)+'%';if(t)t.textContent=`${i+1} / ${n}`}
+function paint(fn){return new Promise(res=>{requestAnimationFrame(()=>{fn();const t=performance.now();requestAnimationFrame(()=>res(t))})})}
+function setButtons(list,kp=false){
+  KEYS={};const r=$('#resp');if(!r)return;r.className='resp'+(kp?' kp':'');r.style.setProperty('--n',list.length);r.innerHTML='';
+  list.forEach(b=>{(b.keys||[]).forEach(k=>KEYS[k]=b.code);const el=document.createElement('button');el.className='rbtn';el.type='button';
+    el.innerHTML=b.label+(b.sub?`<span class="sub">${b.sub}</span>`:'')+(!TOUCH&&b.hint?`<small>${b.hint}</small>`:'');
+    el.addEventListener('pointerdown',e=>{e.preventDefault();if(responder)responder(b.code)});
+    el.addEventListener('click',e=>e.preventDefault());r.appendChild(el)});
+}
+document.addEventListener('keydown',e=>{if(e.repeat)return;const code=KEYS[e.key];if(code&&responder){e.preventDefault();responder(code)}});
+function awaitResponse(valid,deadline,onset){
+  return new Promise(res=>{let done=false,timer=null;
+    if(deadline!=null){const rem=Math.max(0,deadline-(performance.now()-onset));timer=setTimeout(()=>{if(done)return;done=true;responder=null;res({resp:null,rt:null,timeout:true})},rem)}
+    responder=code=>{if(done||!valid.includes(code))return;done=true;if(timer)clearTimeout(timer);responder=null;res({resp:code,rt:performance.now()-onset,timeout:false})};
+  });
+}
+function cur(o){window.__FE.current=o;if(window.__FE.onTrial)try{window.__FE.onTrial(o)}catch(e){}}
+async function feedback(ok,timeout,msg){const fb=$('#fb');if(!fb)return;fb.textContent=msg||(timeout?'Muito lento':(ok?'Correto':'Errado'));fb.className='fb '+(ok?'ok':'bad');await sleep(tm(550));fb.textContent=''}
+function instruct(title,html,label='Continuar'){return new Promise(res=>{$('#view-test').innerHTML=`<div class="card"><h2>${title}</h2>${html}<button class="btn" id="go">${label}</button></div>`;$('#go').onclick=()=>res(true);window.scrollTo(0,0)})}
+function gate(acc){return new Promise(res=>{const low=acc<0.6;$('#view-test').innerHTML=`<div class="card"><h2>Prática concluída</h2><p>Acurácia na prática: <b>${pct(acc)}</b>${low?' — abaixo de 60%. Recomenda‑se repetir a prática antes do teste.':'.'}</p><p class="small">No teste não há feedback. Responda o mais rápido que conseguir sem errar.</p><div class="row"><button class="btn ghost" id="rep">Repetir prática</button><button class="btn" id="go">Começar o teste</button></div></div>`;$('#rep').onclick=()=>res(false);$('#go').onclick=()=>res(true)})}
+function rec(o){SESSION.trials.push(Object.assign({t:Math.round(performance.now()-SESSION.t0)},o))}
+const keyHint=TOUCH?'':' ';
+
+/* ───────────────────────── módulo: Flanker ───────────────────────── */
+const LR_BTNS=(l,r,ls,rs)=>[{code:'L',label:l,sub:ls,keys:['f','F','ArrowLeft'],hint:'F ou ←'},{code:'R',label:r,sub:rs,keys:['j','J','ArrowRight'],hint:'J ou →'}];
+async function runFlanker(){
+  await instruct('Flanker — setas',`<p>Aparecerão cinco setas. Indique a direção da <b>seta central</b>, ignorando as laterais.</p><p>Responda o mais rápido possível sem errar. Antes de cada estímulo aparece um <b>+</b>.</p><p class="small">${TOUCH?'Toque ◀ para esquerda e ▶ para direita.':'Teclas: F (◀) e J (▶), ou as setas do teclado.'}</p>`,'Começar prática');
+  const btns=LR_BTNS('◀','▶');let ok=false;
+  while(!ok){buildStage('Flanker · prática');setButtons(btns);const acc=await flankerBlock('practice',NT(12),true);await sleep(tm(250));ok=await gate(acc)}
+  buildStage('Flanker');setButtons(btns);await flankerBlock('test',NT(96),false);
+}
+async function flankerBlock(phase,n,fb){
+  const conds=shuffle(Array.from({length:n},(_,i)=>i%2?'incong':'cong'));let nc=0;
+  for(let i=0;i<n;i++){
+    const cond=conds[i],dir=Math.random()<.5?'L':'R',c=dir==='L'?'<':'>',f=cond==='cong'?c:(c==='<'?'>':'<'),s=f+f+c+f+f;
+    prog(i,n);clearStim();await sleep(tm(rnd(500,900)));setStim('+','fix');await sleep(tm(400));
+    cur({module:'flanker',valid:['L','R'],correct:dir});
+    const onset=await paint(()=>setStim(s,'arrows'));
+    const r=await awaitResponse(['L','R'],tmD(1500),onset);clearStim();
+    const ok=r.resp===dir;if(ok)nc++;
+    rec({module:'flanker',phase,idx:i,cond,stim:s,corr:dir,resp:r.resp,rt:r.rt==null?null:Math.round(r.rt),correct:ok,timeout:r.timeout});
+    if(fb)await feedback(ok,r.timeout);
+  }
+  return nc/n;
+}
+
+/* ───────────────────────── módulo: Stroop ───────────────────────── */
+const COLORS=[{n:'VERMELHO',c:'#ef5544',code:'C1'},{n:'VERDE',c:'#3fc06a',code:'C2'},{n:'AZUL',c:'#4a9bf0',code:'C3'},{n:'AMARELO',c:'#f0cc2e',code:'C4'}];
+async function runStroop(){
+  await instruct('Stroop — cores',`<p>Aparecerá o nome de uma cor escrito em alguma cor de tinta. Responda à <b>cor da tinta</b>, ignorando a palavra.</p><p>Os botões ficam sempre na mesma ordem: Vermelho · Verde · Azul · Amarelo.</p><p class="small">${TOUCH?'Toque o botão com o nome da cor da tinta.':'Teclas: 1 2 3 4 (ou D F J K), na ordem dos botões.'}</p>`,'Começar prática');
+  const hk=['1','2','3','4'],hk2=['d','f','j','k'];
+  const btns=COLORS.map((k,i)=>({code:k.code,label:k.n,keys:[hk[i],hk2[i],hk2[i].toUpperCase()],hint:hk[i]+' / '+hk2[i].toUpperCase()}));
+  let ok=false;
+  while(!ok){buildStage('Stroop · prática');setButtons(btns);const acc=await stroopBlock('practice',NT(12),true);await sleep(tm(250));ok=await gate(acc)}
+  buildStage('Stroop');setButtons(btns);await stroopBlock('test',NT(72),false);
+}
+async function stroopBlock(phase,n,fb){
+  const conds=shuffle(Array.from({length:n},(_,i)=>i%2?'incong':'cong'));let nc=0;
+  for(let i=0;i<n;i++){
+    const cond=conds[i],ink=pick(COLORS),word=cond==='cong'?ink:pick(COLORS.filter(c=>c!==ink));
+    prog(i,n);clearStim();await sleep(tm(rnd(500,900)));setStim('+','fix');await sleep(tm(400));
+    cur({module:'stroop',valid:COLORS.map(c=>c.code),correct:ink.code});
+    const onset=await paint(()=>setStim(`<span style="color:${ink.c}">${word.n}</span>`,'word',true));
+    const r=await awaitResponse(COLORS.map(c=>c.code),tmD(2000),onset);clearStim();
+    const ok=r.resp===ink.code;if(ok)nc++;
+    rec({module:'stroop',phase,idx:i,cond,stim:word.n+'/'+ink.n,corr:ink.code,resp:r.resp,rt:r.rt==null?null:Math.round(r.rt),correct:ok,timeout:r.timeout});
+    if(fb)await feedback(ok,r.timeout);
+  }
+  return nc/n;
+}
+
+/* ───────────────────────── módulo: Go/No‑Go ───────────────────────── */
+const GO_LETTERS='BCDFGHJKLMNPRSTVZ'.split('');
+async function runGng(){
+  await instruct('Go/No‑Go',`<p>Letras aparecem uma por vez, rapidamente. <b>Toque a cada letra</b> — exceto quando for <b>X</b>: aí, não responda.</p><p>A maioria das letras pede resposta; o ritmo é rápido. Erros por responder ao X são esperados — tente evitá‑los sem ficar lento.</p><p class="small">${TOUCH?'Toque o botão grande para responder.':'Tecla: barra de espaço.'}</p>`,'Começar prática');
+  const btns=[{code:'GO',label:'RESPONDER',keys:[' ','Enter'],hint:'espaço'}];let ok=false;
+  while(!ok){buildStage('Go/No‑Go · prática');setButtons(btns);const acc=await gngBlock('practice',NT(16),true);await sleep(tm(250));ok=await gate(acc)}
+  buildStage('Go/No‑Go');setButtons(btns);await gngBlock('test',NT(120),false);
+}
+async function gngBlock(phase,n,fb){
+  const nNo=Math.round(n*0.25);const types=shuffle(Array.from({length:n},(_,i)=>i<nNo?'nogo':'go'));let nc=0;
+  for(let i=0;i<n;i++){
+    const cond=types[i],letter=cond==='nogo'?'X':pick(GO_LETTERS);
+    prog(i,n);clearStim();await sleep(tm(rnd(600,1000)));
+    cur({module:'gng',valid:['GO'],correct:cond==='go'?'GO':null});
+    const onset=await paint(()=>setStim(letter,'letter'));
+    const hide=setTimeout(clearStim,tm(400));
+    const r=await awaitResponse(['GO'],tmD(1000),onset);clearTimeout(hide);clearStim();
+    const ok=cond==='go'?!r.timeout:r.timeout;if(ok)nc++;
+    rec({module:'gng',phase,idx:i,cond,stim:letter,corr:cond==='go'?'GO':'—',resp:r.resp,rt:r.rt==null?null:Math.round(r.rt),correct:ok,timeout:r.timeout});
+    if(fb)await feedback(ok,cond==='go'&&r.timeout,cond==='nogo'&&!ok?'Errado — era X':null);
+  }
+  return nc/n;
+}
+
+/* ───────────────────────── módulo: 2‑back ───────────────────────── */
+const NB_LETTERS=['B','D','F','H','K','M','P','S'];
+function genNback(n){
+  const seq=[],type=[];
+  for(let i=0;i<n;i++){
+    if(i<2){seq.push(pick(NB_LETTERS));type.push('nontarget');continue}
+    const r=Math.random();
+    if(r<0.30){seq.push(seq[i-2]);type.push('target')}
+    else if(r<0.40&&i>=3){const cands=[seq[i-1],seq[i-3]].filter(x=>x!==seq[i-2]);if(cands.length){seq.push(pick(cands));type.push('lure')}else{seq.push(pick(NB_LETTERS.filter(x=>x!==seq[i-2]&&x!==seq[i-1])));type.push('nontarget')}}
+    else{const ex=new Set([seq[i-2],seq[i-1],i>=3?seq[i-3]:null]);seq.push(pick(NB_LETTERS.filter(x=>!ex.has(x))));type.push('nontarget')}
+  }
+  return {seq,type};
+}
+async function runNback(){
+  await instruct('2‑back — letras',`<p>Letras aparecem em sequência. Responda quando a letra atual for <b>igual à que apareceu duas posições antes</b>.</p><p>Exemplo: B · K · <b>B</b> ← responder (igual a duas atrás). Não responda nos demais casos, inclusive quando for igual à imediatamente anterior.</p><p class="small">${TOUCH?'Toque o botão IGUAL quando for o caso.':'Tecla: barra de espaço.'}</p>`,'Começar prática');
+  const btns=[{code:'GO',label:'IGUAL',sub:'à de 2 atrás',keys:[' ','Enter'],hint:'espaço'}];let ok=false;
+  while(!ok){buildStage('2‑back · prática');setButtons(btns);const acc=await nbackBlock('practice',NT(16),true);await sleep(tm(250));ok=await gate(acc)}
+  buildStage('2‑back');setButtons(btns);await nbackBlock('test',NT(70),false);
+}
+async function nbackBlock(phase,n,fb){
+  const {seq,type}=genNback(n);let nc=0;const WIN=tmD(2500);
+  for(let i=0;i<n;i++){
+    const cond=type[i],letter=seq[i];prog(i,n);
+    cur({module:'nback',valid:['GO'],correct:cond==='target'?'GO':null});
+    const onset=await paint(()=>setStim(letter,'letter'));
+    const hide=setTimeout(clearStim,tm(500));
+    const r=await awaitResponse(['GO'],WIN,onset);clearTimeout(hide);clearStim();
+    const ok=cond==='target'?!r.timeout:r.timeout;if(ok)nc++;
+    rec({module:'nback',phase,idx:i,cond,stim:letter,corr:cond==='target'?'GO':'—',resp:r.resp,rt:r.rt==null?null:Math.round(r.rt),correct:ok,timeout:r.timeout});
+    if(fb){await feedback(ok,cond==='target'&&r.timeout,!ok&&cond!=='target'?'Errado — não era igual':(!ok?'Perdeu um alvo':null))}
+    else{const rem=WIN-(performance.now()-onset);if(rem>0)await sleep(rem)}
+  }
+  return nc/n;
+}
+
+/* ───────────────────────── módulo: 3‑back ───────────────────────── */
+// Contagens fixas por bloco (30% alvos, 10% iscas n−1, 10% iscas n+1, 50% não‑alvos),
+// precedidas de n letras de entrada, que não admitem resposta e ficam fora do escore.
+const NB3={N:3,blocks:3,scored:40,practice:20,win:2500};
+function nbCounts(scored){const nT=Math.round(scored*.3),nA=Math.round(scored*.1),nB=Math.round(scored*.1);return{nT,nA,nB,nN:scored-nT-nA-nB}}
+function genNbackFixed(n,scored){
+  const {nT,nA,nB,nN}=nbCounts(scored),LM='lure'+(n-1),LP='lure'+(n+1),MAX=20000;
+  const pool=[...Array(nT).fill('target'),...Array(nA).fill(LM),...Array(nB).fill(LP),...Array(nN).fill('nontarget')];
+  for(let attempt=0;attempt<=MAX;attempt++){
+    const strict=attempt<MAX,types=shuffle(pool);let run=0,ok=true;
+    if(strict){for(const t of types){run=t==='target'?run+1:0;if(run>2){ok=false;break}}if(!ok)continue}
+    const seq=[];for(let i=0;i<n;i++)seq.push(pick(NB_LETTERS.filter(x=>!seq.includes(x))));
+    for(let k=0;k<scored;k++){
+      const i=n+k,b=j=>seq[i-j];let t=types[k],c;
+      // isca pura: igual só à letra da sua própria distância (nem alvo, nem a outra isca, nem repetição imediata)
+      if(t===LM){c=b(n-1);if(c===b(n)||c===b(n+1)||(n>2&&c===b(1)))c=undefined}
+      else if(t===LP){c=b(n+1);if(c===undefined||c===b(n)||c===b(n-1)||c===b(1))c=undefined}
+      if(t==='target')c=b(n);
+      else if(c===undefined){
+        if(t!=='nontarget'){if(strict){ok=false;break}t=types[k]='nontarget'}
+        const ex=new Set();for(let j=1;j<=n+1;j++)ex.add(b(j));c=pick(NB_LETTERS.filter(x=>!ex.has(x)));
+      }
+      seq.push(c);
+    }
+    if(ok)return{seq,type:[...Array(n).fill('lead'),...types]};
+  }
+}
+async function runNback3(){
+  const N=NB3.N,per=N+NB3.scored;
+  await instruct('3‑back — letras',`<p>Letras aparecem em sequência. Responda quando a letra atual for <b>igual à que apareceu três posições antes</b>.</p><p>Exemplo: B · K · F · <b>B</b> ← responder (igual à de três atrás).</p><p>Há armadilhas de propósito: letras iguais à de <b>duas</b> ou de <b>quatro</b> posições atrás. Nessas, não responda. As três primeiras letras de cada bloco nunca pedem resposta.</p><p class="small">São ${NB3.blocks} blocos de ${per} letras (≈ ${fmt(per*NB3.win/60000,1)} min cada), com pausa entre eles. ${TOUCH?'Toque o botão IGUAL quando for o caso.':'Tecla: barra de espaço.'}</p>`,'Começar prática');
+  const btns=[{code:'GO',label:'IGUAL',sub:'à de 3 atrás',keys:[' ','Enter'],hint:'espaço'}];let ok=false;
+  while(!ok){buildStage('3‑back · prática');setButtons(btns);const acc=await nback3Block('practice','p',NT(NB3.practice),true);await sleep(tm(250));ok=await gate(acc)}
+  for(let b=1;b<=NB3.blocks;b++){
+    if(b>1)await instruct(`Bloco ${b-1}/${NB3.blocks} concluído`,`<p>Faça uma pausa curta. O próximo bloco começa do zero: as três primeiras letras não pedem resposta.</p>`,'Começar bloco '+b);
+    buildStage(`3‑back · bloco ${b}/${NB3.blocks}`);setButtons(btns);await nback3Block('test','b'+b,NT(NB3.scored),false);await sleep(tm(250));
+  }
+}
+async function nback3Block(phase,block,scored,fb){
+  const {seq,type}=genNbackFixed(NB3.N,scored),n=seq.length,WIN=tmD(NB3.win);let hit=0,nTg=0,cr=0,nNo=0;
+  for(let i=0;i<n;i++){
+    const cond=type[i],letter=seq[i],isT=cond==='target',lead=cond==='lead';prog(i,n);
+    cur({module:'nback3',valid:['GO'],correct:isT?'GO':null,cond});
+    const onset=await paint(()=>setStim(letter,'letter'));
+    const hide=setTimeout(clearStim,tm(500));
+    const r=await awaitResponse(['GO'],WIN,onset);clearTimeout(hide);clearStim();
+    const ok=isT?!r.timeout:r.timeout;
+    if(!lead){if(isT){nTg++;if(ok)hit++}else{nNo++;if(ok)cr++}}
+    rec({module:'nback3',phase,block,idx:i,cond,stim:letter,corr:isT?'GO':'—',resp:r.resp,rt:r.rt==null?null:Math.round(r.rt),correct:ok,timeout:r.timeout});
+    if(fb&&!(lead&&ok))await feedback(ok,false,ok?null:(lead?'Ainda não — as 3 primeiras não pedem resposta':isT?'Perdeu um alvo':cond==='nontarget'?'Errado — não era igual':'Errado — era a de '+cond.slice(4)+' atrás'));
+    const rem=WIN-(performance.now()-onset);if(rem>0)await sleep(rem);   // SOA constante também na prática
+  }
+  // prática: acurácia balanceada (não responder a nada rende 50%, não 70%)
+  return ((nTg?hit/nTg:1)+(nNo?cr/nNo:1))/2;
+}
+
+/* ───────────────────────── módulo: span inverso ───────────────────────── */
+const KP_CODES=['d1','d2','d3','d4','d5','d6','d7','d8','d9','BS','d0','OK'];
+function setKeypad(){
+  const list=[];for(let i=1;i<=9;i++)list.push({code:'d'+i,label:String(i),keys:[String(i)]});
+  list.push({code:'BS',label:'⌫',keys:['Backspace']});list.push({code:'d0',label:'0',keys:['0']});list.push({code:'OK',label:'OK',keys:['Enter']});
+  setButtons(list,true);
+}
+function genDigits(len){const d=[];while(d.length<len){const x=Math.floor(Math.random()*10);if(d.length&&(x===d[d.length-1]||Math.abs(x-d[d.length-1])===1&&len>3&&Math.random()<.7))continue;d.push(x)}return d}
+async function presentDigits(ds){setStim('memorize','prompt');await sleep(tm(700));clearStim();await sleep(tm(300));for(const d of ds){await paint(()=>setStim(String(d),'letter'));await sleep(tm(800));clearStim();await sleep(tm(300))}}
+async function keypadInput(len,ds){
+  const entered=[];const draw=()=>setStim(entered.length?entered.join(' '):'<span class="dim">ordem inversa</span>','entry',true);
+  setCue(`digite ${len} dígitos na ordem inversa`,'');draw();
+  cur({module:'span',valid:KP_CODES,type:'keypad',len,digits:ds});
+  while(true){
+    const r=await awaitResponse(KP_CODES,null,performance.now());
+    if(r.resp==='BS')entered.pop();
+    else if(r.resp==='OK'){if(entered.length===len)break;setCue(`faltam ${len-entered.length} dígito(s)`,'');}
+    else if(entered.length<len)entered.push(r.resp.slice(1));
+    draw();
+  }
+  setCue('','');return entered;
+}
+async function runSpan(){
+  await instruct('Span de dígitos inverso',`<p>Uma sequência de dígitos aparece, um de cada vez. Ao final, digite‑a na <b>ordem inversa</b> (do último para o primeiro) e confirme com OK.</p><p>As sequências vão ficando mais longas. São dois ensaios por comprimento; a tarefa termina quando os dois falham.</p><p class="small">${TOUCH?'Use o teclado numérico na tela.':'Use os dígitos do teclado, Backspace para corrigir e Enter para confirmar.'}</p>`,'Começar prática');
+  buildStage('Span inverso · prática');setKeypad();
+  for(let k=0;k<2;k++){const ds=genDigits(2);await presentDigits(ds);const ans=await keypadInput(2,ds);const ok=ans.join('')===[...ds].reverse().join('');
+    cur({module:'span',type:'none'});await feedback(ok,false,ok?'Correto':'Resposta: '+[...ds].reverse().join(' '));await sleep(tm(300))}
+  await sleep(tm(250));
+  await instruct('Span inverso — teste',`<p>Agora sem feedback. Comprimento inicial: 2 dígitos.</p>`,'Começar');
+  buildStage('Span inverso');setKeypad();
+  let len=2,trialNo=0;
+  while(len<=9){
+    let any=false;
+    for(let t=0;t<2;t++){
+      prog(len-2,8);const ds=genDigits(len);await presentDigits(ds);const ans=await keypadInput(len,ds);
+      const ok=ans.join('')===[...ds].reverse().join('');if(ok)any=true;
+      rec({module:'span',phase:'test',idx:trialNo++,len,stim:ds.join(''),corr:[...ds].reverse().join(''),resp:ans.join(''),correct:ok,timeout:false,rt:null});
+      cur({module:'span',type:'none'});clearStim();await sleep(tm(500));
+    }
+    if(!any)break;len++;
+  }
+}
+
+/* ───────────────────────── módulo: alternância ───────────────────────── */
+const SW_DIGITS=[1,2,3,4,6,7,8,9];
+const swCorrect=(task,d)=>task==='A'?(d%2===1?'L':'R'):(d<5?'L':'R');
+function swCue(task){setCue(task==='A'?'PAR ou ÍMPAR?':'MAIOR ou MENOR que 5?',task==='A'?'a':'b')}
+async function runSwitch(){
+  await instruct('Alternância de tarefa',`<p>Um dígito (1–9, sem o 5) aparece dentro de uma moldura colorida com uma pergunta:</p><p><b style="color:${'#3a7bc8'}">Azul — PAR ou ÍMPAR?</b> → ÍMPAR à esquerda, PAR à direita.<br><b style="color:${'#c86f1e'}">Laranja — MAIOR ou MENOR que 5?</b> → MENOR à esquerda, MAIOR à direita.</p><p>Primeiro cada tarefa separadamente; depois as duas misturadas, mudando sem aviso. Os botões mostram as duas regras.</p><p class="small">${TOUCH?'Toque o botão da esquerda ou da direita.':'Teclas: F (esquerda) e J (direita).'}</p>`,'Começar prática');
+  const btns=LR_BTNS('ÍMPAR','PAR','MENOR que 5','MAIOR que 5');let ok=false;
+  while(!ok){buildStage('Alternância · prática');setButtons(btns);
+    const a1=await switchBlock('practice','pureA',NT(6),true),a2=await switchBlock('practice','pureB',NT(6),true),a3=await switchBlock('practice','mixed',NT(12),true);
+    await sleep(tm(250));ok=await gate((a1*NT(6)+a2*NT(6)+a3*NT(12))/(NT(6)*2+NT(12)))}
+  buildStage('Alternância · bloco 1/3 (paridade)');setButtons(btns);await switchBlock('test','pureA',NT(24),false);
+  await sleep(tm(250));await instruct('Bloco 2/3',`<p>Agora só <b style="color:#c86f1e">MAIOR ou MENOR que 5</b>.</p>`,'Continuar');
+  buildStage('Alternância · bloco 2/3 (magnitude)');setButtons(btns);await switchBlock('test','pureB',NT(24),false);
+  await sleep(tm(250));await instruct('Bloco 3/3',`<p>Agora as duas tarefas <b>misturadas</b>. Siga a cor da moldura e a pergunta no topo.</p>`,'Continuar');
+  buildStage('Alternância · bloco 3/3 (misto)');setButtons(btns);await switchBlock('test','mixed',NT(96),false);
+}
+async function switchBlock(phase,block,n,fb){
+  const tasks=[];for(let i=0;i<n;i++){if(block==='pureA')tasks.push('A');else if(block==='pureB')tasks.push('B');else tasks.push(i===0?pick(['A','B']):(Math.random()<.5?tasks[i-1]:(tasks[i-1]==='A'?'B':'A')))}
+  let nc=0;
+  for(let i=0;i<n;i++){
+    const task=tasks[i],d=pick(SW_DIGITS),corr=swCorrect(task,d);
+    const trans=block!=='mixed'?'pure':(i===0?'first':(tasks[i]===tasks[i-1]?'repeat':'switch'));
+    const congr=swCorrect('A',d)===swCorrect('B',d);
+    prog(i,n);clearStim();setCue('','');await sleep(tm(rnd(500,900)));setStim('+','fix');await sleep(tm(300));
+    cur({module:'switch',valid:['L','R'],correct:corr});
+    const onset=await paint(()=>{swCue(task);setStim(String(d),'letter')});
+    const r=await awaitResponse(['L','R'],tmD(2500),onset);clearStim();setCue('','');
+    const ok=r.resp===corr;if(ok)nc++;
+    rec({module:'switch',phase,block,idx:i,task,trans,congr,stim:String(d),corr,resp:r.resp,rt:r.rt==null?null:Math.round(r.rt),correct:ok,timeout:r.timeout});
+    if(fb)await feedback(ok,r.timeout);
+  }
+  return nc/n;
+}
+
+/* ───────────────────────── orquestração ───────────────────────── */
+const RUNNERS={flanker:runFlanker,stroop:runStroop,gng:runGng,nback:runNback,nback3:runNback3,span:runSpan,switch:runSwitch};
+async function startBattery(){
+  const sel=[...document.querySelectorAll('.mod input:checked')].map(i=>i.dataset.m);
+  if(!sel.length){alertBox('Selecione ao menos um módulo.');return}
+  SESSION={id:($('#pid').value||'').trim(),device:TOUCH?'toque':'teclado',ua:navigator.userAgent.slice(0,120),screen:screen.width+'x'+screen.height,date:new Date().toISOString(),t0:performance.now(),modules:sel,trials:[]};
+  for(let i=0;i<sel.length;i++){
+    const m=MODULES.find(x=>x.id===sel[i]);
+    await RUNNERS[m.id]();
+    await sleep(tm(250));
+    if(i<sel.length-1){const nx=MODULES.find(x=>x.id===sel[i+1]);await instruct('Módulo concluído',`<p><b>${m.name}</b> finalizado. Faça uma pausa curta se quiser.</p><p class="small">Próximo: ${nx.name} (≈ ${nx.min} min).</p>`,'Próximo módulo')}
+  }
+  SESSION.durationMin=(performance.now()-SESSION.t0)/60000;
+  const summary=computeSummary(SESSION);window.__FE.summary=summary;
+  saveLocal(summary);
+  renderResults(SESSION,summary);
+  $('#view-test').innerHTML=`<div class="card"><h2>Bateria concluída</h2><p>Os resultados estão na aba Resultados. Para uma nova sessão, recarregue a página.</p><button class="btn" onclick="go('results')">Ver resultados</button></div>`;
+  go('results');
+}
+function alertBox(msg){const v=$('#view-test');const d=document.createElement('div');d.className='note';d.textContent=msg;v.prepend(d);setTimeout(()=>d.remove(),2500)}
+
+/* ───────────────────────── métricas ───────────────────────── */
+const valid=t=>!t.timeout&&t.rt!=null&&t.rt>=150;
+function conflictMetrics(T){
+  const C=T.filter(t=>t.cond==='cong'),I=T.filter(t=>t.cond==='incong');
+  const acc=a=>a.length?a.filter(t=>t.correct).length/a.length:NaN,rts=a=>a.filter(t=>valid(t)&&t.correct).map(t=>t.rt);
+  const rC=rts(C),rI=rts(I);
+  const m={n:T.length,nC:C.length,nI:I.length,accC:acc(C),accI:acc(I),acc:acc(T),medC:median(rC),medI:median(rI),meanC:mean(rC),meanI:mean(rI),sdC:sd(rC),sdI:sd(rI),timeouts:T.filter(t=>t.timeout).length,antic:T.filter(t=>!t.timeout&&t.rt!=null&&t.rt<150).length};
+  m.effRT=m.medI-m.medC;m.effRTmean=m.meanI-m.meanC;m.se=Math.sqrt(m.sdI**2/rI.length+m.sdC**2/rC.length);m.ci=1.96*m.se;
+  m.effErr=(1-m.accI)-(1-m.accC);m.iesC=m.meanC/m.accC;m.iesI=m.meanI/m.accI;m.effIES=m.iesI-m.iesC;
+  const half=k=>{const H=T.filter((t,i)=>i%2===k);return median(rts(H.filter(t=>t.cond==='incong')))-median(rts(H.filter(t=>t.cond==='cong')))};
+  m.effOdd=half(1);m.effEven=half(0);return m;
+}
+function nihFlanker(m){const accS=5*m.acc;if(!(m.acc>0.8)||Number.isNaN(m.medI))return{score:accS,accS,rtS:null};const rt=Math.min(3000,Math.max(500,m.medI));const rtS=5-5*((Math.log(rt)-Math.log(500))/(Math.log(3000)-Math.log(500)));return{score:accS+rtS,accS,rtS}}
+function gngMetrics(T){
+  const go=T.filter(t=>t.cond==='go'),ng=T.filter(t=>t.cond==='nogo');
+  const hits=go.filter(t=>!t.timeout).length,om=go.length-hits,comm=ng.filter(t=>!t.timeout).length;
+  const pH=(hits+.5)/(go.length+1),pF=(comm+.5)/(ng.length+1);const rt=go.filter(valid).map(t=>t.rt);
+  const half=k=>{const H=ng.filter((t,i)=>i%2===k);return H.length?H.filter(t=>!t.timeout).length/H.length:NaN};
+  return{n:T.length,nGo:go.length,nNoGo:ng.length,hits,omissions:om,omRate:om/go.length,commissions:comm,commRate:comm/ng.length,dprime:zinv(pH)-zinv(pF),medRT:median(rt),sdRT:sd(rt),commOdd:half(1),commEven:half(0)};
+}
+function nbackMetrics(T){
+  const tg=T.filter(t=>t.cond==='target'),nt=T.filter(t=>t.cond==='nontarget'),lu=T.filter(t=>t.cond==='lure');
+  const resp=a=>a.filter(t=>!t.timeout).length;const hits=resp(tg),faN=resp(nt),faL=resp(lu);
+  const pH=(hits+.5)/(tg.length+1),pF=(faN+faL+.5)/(nt.length+lu.length+1);const rt=tg.filter(valid).map(t=>t.rt);
+  const dHalf=k=>{const H=T.filter((t,i)=>i%2===k);const a=H.filter(t=>t.cond==='target'),b=H.filter(t=>t.cond!=='target');return zinv((resp(a)+.5)/(a.length+1))-zinv((resp(b)+.5)/(b.length+1))};
+  return{n:T.length,nTarget:tg.length,nNon:nt.length,nLure:lu.length,hits,hitRate:hits/tg.length,faN,faRate:faN/nt.length,faL,lureRate:lu.length?faL/lu.length:NaN,dprime:zinv(pH)-zinv(pF),medRT:median(rt),dOdd:dHalf(1),dEven:dHalf(0)};
+}
+function nback3Metrics(T){
+  const S=T.filter(t=>t.cond!=='lead'),by=c=>S.filter(t=>t.cond===c);
+  const tg=by('target'),nt=by('nontarget'),l2=by('lure2'),l4=by('lure4'),lu=[...l2,...l4],non=[...nt,...lu];
+  const resp=a=>a.filter(t=>!t.timeout).length,rate=a=>a.length?resp(a)/a.length:NaN;
+  const zR=a=>zinv((resp(a)+.5)/(a.length+1)),dp=(a,b)=>zR(a)-zR(b),isT=t=>t.cond==='target';
+  const m={n:S.length,nLead:T.length-S.length,nTarget:tg.length,nNon:nt.length,nLure:lu.length,nLure2:l2.length,nLure4:l4.length,
+    hits:resp(tg),hitRate:rate(tg),faN:resp(nt),faRate:rate(nt),faL:resp(lu),lureRate:rate(lu),faL2:resp(l2),lure2Rate:rate(l2),faL4:resp(l4),lure4Rate:rate(l4),
+    acc:S.length?S.filter(t=>t.correct).length/S.length:NaN,
+    dprime:dp(tg,non),dLure:dp(tg,lu),dNon:dp(tg,nt),crit:-(zR(tg)+zR(non))/2,medRT:median(tg.filter(valid).map(t=>t.rt))};
+  m.dMax=zinv((tg.length+.5)/(tg.length+1))-zinv(.5/(non.length+1));
+  m.ceiling=tg.length>0&&m.hits===tg.length&&m.faN+m.faL===0;
+  m.dBlocks=[...new Set(S.map(t=>t.block))].map(b=>{const B=S.filter(t=>t.block===b);return dp(B.filter(isT),B.filter(t=>!isT(t)))});
+  const half=k=>{const H=S.filter((t,i)=>i%2===k);return dp(H.filter(isT),H.filter(t=>!isT(t)))};
+  m.dOdd=half(1);m.dEven=half(0);return m;
+}
+function spanMetrics(T){const ok=T.filter(t=>t.correct).map(t=>t.len);return{n:T.length,ldsb:ok.length?Math.max(...ok):0,totalCorrect:ok.length,maxTried:T.length?Math.max(...T.map(t=>t.len)):0}}
+function switchMetrics(T){
+  const okv=t=>valid(t)&&t.correct;const pure=T.filter(t=>t.block!=='mixed'),rep=T.filter(t=>t.trans==='repeat'),sw=T.filter(t=>t.trans==='switch');
+  const rts=a=>a.filter(okv).map(t=>t.rt),acc=a=>a.length?a.filter(t=>t.correct).length/a.length:NaN;
+  const rP=rts(pure),rR=rts(rep),rS=rts(sw);
+  const m={n:T.length,nPure:pure.length,nRep:rep.length,nSw:sw.length,medPure:median(rP),medRep:median(rR),medSw:median(rS),accPure:acc(pure),accRep:acc(rep),accSw:acc(sw),timeouts:T.filter(t=>t.timeout).length};
+  m.switchCost=m.medSw-m.medRep;m.mixCost=m.medRep-m.medPure;m.switchErr=(1-m.accSw)-(1-m.accRep);m.mixErr=(1-m.accRep)-(1-m.accPure);
+  m.ciSwitch=1.96*Math.sqrt(sd(rS)**2/rS.length+sd(rR)**2/rR.length);
+  const mixed=T.filter(t=>t.block==='mixed');const half=k=>{const H=mixed.filter((t,i)=>i%2===k);return median(rts(H.filter(t=>t.trans==='switch')))-median(rts(H.filter(t=>t.trans==='repeat')))};
+  m.swOdd=half(1);m.swEven=half(0);return m;
+}
+function computeSummary(S){
+  const T=m=>S.trials.filter(t=>t.module===m&&t.phase==='test');
+  const out={id:S.id,date:S.date,device:S.device,screen:S.screen,durationMin:+S.durationMin.toFixed(1),modules:S.modules,version:'1.1'};
+  if(S.modules.includes('flanker')){out.flanker=conflictMetrics(T('flanker'));out.flanker.nih=nihFlanker(out.flanker)}
+  if(S.modules.includes('stroop'))out.stroop=conflictMetrics(T('stroop'));
+  if(S.modules.includes('gng'))out.gng=gngMetrics(T('gng'));
+  if(S.modules.includes('nback'))out.nback=nbackMetrics(T('nback'));
+  if(S.modules.includes('nback3')){out.nback3=nback3Metrics(T('nback3'));
+    // os tetos de d′ diferem entre as tarefas (dependem do nº de ensaios): com sessão no teto a diferença não é interpretável
+    if(out.nback){const b=out.nback,c2=b.hits===b.nTarget&&b.faN+b.faL===0;out.nback3.loadCost=(c2||out.nback3.ceiling)?null:b.dprime-out.nback3.dprime}}
+  if(S.modules.includes('span'))out.span=spanMetrics(T('span'));
+  if(S.modules.includes('switch'))out.switch=switchMetrics(T('switch'));
+  return out;
+}
+
+/* ───────────────────────── normas locais ───────────────────────── */
+const INDICATORS=[
+ {key:'flanker.effRT',label:'Efeito flanker (RT)',domain:'Controle atencional',hb:false,unit:'ms',halves:['flanker.effOdd','flanker.effEven']},
+ {key:'flanker.nih.score',label:'Flanker · escore tipo NIH (0–10)',domain:'Controle atencional',hb:true,unit:'',composite:false},
+ {key:'stroop.effRT',label:'Efeito Stroop (RT)',domain:'Controle atencional',hb:false,unit:'ms',halves:['stroop.effOdd','stroop.effEven']},
+ {key:'gng.commRate',label:'Go/No‑Go · comissões',domain:'Controle atencional',hb:false,unit:'%',halves:['gng.commOdd','gng.commEven']},
+ {key:'nback.dprime',label:'2‑back · d′',domain:'Memória de trabalho',hb:true,unit:'',halves:['nback.dOdd','nback.dEven']},
+ {key:'nback3.dprime',label:'3‑back · d′',domain:'Memória de trabalho',hb:true,unit:'',halves:['nback3.dOdd','nback3.dEven']},
+ {key:'nback3.dLure',label:'3‑back · d′ contra iscas',domain:'Memória de trabalho',hb:true,unit:'',composite:false},
+ {key:'span.ldsb',label:'Span inverso · LDSB',domain:'Memória de trabalho',hb:true,unit:'',dec:0},
+ {key:'switch.switchCost',label:'Custo de troca (RT)',domain:'Alternância',hb:false,unit:'ms',halves:['switch.swOdd','switch.swEven']},
+ {key:'switch.mixCost',label:'Custo de mistura (RT)',domain:'Alternância',hb:false,unit:'ms'},
+];
+const getp=(o,k)=>k.split('.').reduce((a,b)=>a==null?undefined:a[b],o);
+const isNum=v=>typeof v==='number'&&Number.isFinite(v);
+function localNorms(summary){
+  const all=loadLocal().filter(s=>s&&s.version);const n=all.length;const rows=[];const domZ={};
+  INDICATORS.forEach(ind=>{
+    const v=getp(summary,ind.key);if(!isNum(v))return;
+    const vals=all.map(s=>getp(s,ind.key)).filter(isNum);
+    const row={ind,v,n:vals.length};
+    if(vals.length>=10){
+      const below=vals.filter(x=>ind.hb?x<v:x>v).length,ties=vals.filter(x=>x===v).length;
+      row.pct=100*(below+0.5*ties)/vals.length;
+      const m=mean(vals),s=sd(vals);row.z=s>0?((v-m)/s)*(ind.hb?1:-1):0;
+      if(ind.composite!==false){(domZ[ind.domain]=domZ[ind.domain]||[]).push(row.z)}
+      if(ind.halves){const a=all.map(s=>getp(s,ind.halves[0])),b=all.map(s=>getp(s,ind.halves[1]));const pairs=a.map((x,i)=>[x,b[i]]).filter(p=>isNum(p[0])&&isNum(p[1]));if(pairs.length>=10){const r=pearson(pairs.map(p=>p[0]),pairs.map(p=>p[1]));row.sh=r;row.sb=r>0?2*r/(1+r):null}}
+    }
+    rows.push(row);
+  });
+  const dom=Object.entries(domZ).map(([d,zs])=>({d,z:mean(zs)}));const ef=dom.length?mean(dom.map(x=>x.z)):NaN;
+  return{n,rows,dom,ef};
+}
+
+/* ───────────────────────── resultados ───────────────────────── */
+const TETO=' <span class="pill warn">teto</span>';
+const mrow=(l,v,note)=>`<div class="metric"><span>${l}${note?` <span class="tiny">${note}</span>`:''}</span><span class="v">${v}</span></div>`;
+const refbox=t=>`<div class="ref">${t}</div>`;
+function card(title,domain,body){return`<div class="card"><div class="domain">${domain}</div><h2 style="margin-top:2px">${title}</h2>${body}</div>`}
+function renderResults(S,sm){
+  let h=`<div class="card"><h2>Resultados da sessão</h2><p class="small">${sm.id?`<b>${esc(sm.id)}</b> · `:''}${new Date(sm.date).toLocaleString('pt-BR')} · ${sm.device} · ${sm.screen} · ${fmt(sm.durationMin,1)} min · ${sm.modules.length} módulo(s)</p>
+  <div class="note">Administração e escore padronizados; não há normas populacionais para esta implementação. Interprete contrastes intra‑sujeito (efeitos, custos, d′) com seus intervalos de confiança, use percentis locais quando houver n ≥ 10 e trate as faixas "típicas" como orientação da literatura, não como norma.</div></div>`;
+  if(sm.flanker){const m=sm.flanker,q=m.nih;h+=card('Flanker','Controle atencional',
+    mrow('Efeito de congruência (RT mediano)',`<b>${fmt(m.effRT)} ms</b> <small>IC95 ±${fmt(m.ci)} (médias)</small>`)+
+    mrow('Efeito em erros',`${fmt(100*m.effErr,1)} pp`)+
+    mrow('RT mediano · congruente / incongruente',`${fmt(m.medC)} / ${fmt(m.medI)} ms`)+
+    mrow('Acurácia · congruente / incongruente',`${pct(m.accC)} / ${pct(m.accI)}`)+
+    mrow('IES (incong − cong)',`${fmt(m.effIES)} ms`)+
+    mrow('Escore computado tipo NIH Toolbox (0–10)',`<b>${fmt(q.score,2)}</b> <small>acur. ${fmt(q.accS,2)}${q.rtS!=null?' + RT '+fmt(q.rtS,2):' · RT não pontuado (acur. ≤ 80%)'}</small>`)+
+    mrow('Timeouts / antecipações (&lt;150 ms)',`${m.timeouts} / ${m.antic}`)+
+    refbox('Faixa típica (adultos, versões computadorizadas): efeito ≈ 30–90 ms; acurácia &gt; 90%. Efeitos pequenos com IC largo são a norma — ver Protocolo §6.'))}
+  if(sm.stroop){const m=sm.stroop;h+=card('Stroop','Controle atencional · interferência',
+    mrow('Efeito de interferência (RT mediano)',`<b>${fmt(m.effRT)} ms</b> <small>IC95 ±${fmt(m.ci)}</small>`)+
+    mrow('Efeito em erros',`${fmt(100*m.effErr,1)} pp`)+
+    mrow('RT mediano · congruente / incongruente',`${fmt(m.medC)} / ${fmt(m.medI)} ms`)+
+    mrow('Acurácia · congruente / incongruente',`${pct(m.accC)} / ${pct(m.accI)}`)+
+    mrow('IES (incong − cong)',`${fmt(m.effIES)} ms`)+
+    mrow('Timeouts / antecipações',`${m.timeouts} / ${m.antic}`)+
+    refbox('Faixa típica (resposta manual, 4 cores): ≈ 80–180 ms. Reteste ICC ≈ .60–.67 em Hedge et al. (2018).'))}
+  if(sm.gng){const m=sm.gng;h+=card('Go/No‑Go','Inibição de resposta',
+    mrow('Erros de comissão (respondeu ao X)',`<b>${pct(m.commRate,1)}</b> <small>${m.commissions}/${m.nNoGo}</small>`)+
+    mrow('Omissões (não respondeu ao go)',`${pct(m.omRate,1)} <small>${m.omissions}/${m.nGo}</small>`)+
+    mrow('d′ (log‑linear)',fmt(m.dprime,2))+
+    mrow('RT go mediano · DP',`${fmt(m.medRT)} ms · ${fmt(m.sdRT)}`)+
+    refbox('Faixa típica com 25% no‑go e ritmo rápido: comissões ≈ 10–30%. É o índice com melhor reteste da família de conflito (ICC ≈ .76), mas sensível aos parâmetros de ritmo.'))}
+  if(sm.nback){const m=sm.nback;h+=card('2‑back','Atualização · memória de trabalho',
+    mrow('d′',`<b>${fmt(m.dprime,2)}</b>${m.hits===m.nTarget&&m.faN+m.faL===0?TETO:''}`)+
+    mrow('Acertos (alvos)',`${pct(m.hitRate)} <small>${m.hits}/${m.nTarget}</small>`)+
+    mrow('Falsos alarmes · não‑alvos / iscas',`${pct(m.faRate)} / ${pct(m.lureRate)} <small>${m.faN}/${m.nNon} · ${m.faL}/${m.nLure}</small>`)+
+    mrow('RT mediano nos acertos',`${fmt(m.medRT)} ms`)+
+    refbox('Faixa típica: d′ ≈ 1,5–3,5. Falsos alarmes em iscas indexam controle de interferência proativa. n‑back correlaciona só ≈ .20 com spans complexos (Redick &amp; Lindsey, 2013).'+(m.hits===m.nTarget&&m.faN+m.faL===0?' <b>Sessão no teto</b>: o 2‑back não discrimina acima deste nível; use o 3‑back.':'')))}
+  if(sm.nback3){const m=sm.nback3,b2=sm.nback,c2=b2&&b2.hits===b2.nTarget&&b2.faN+b2.faL===0;h+=card('3‑back','Memória de trabalho · carga alta',
+    mrow('d′ (alvos vs. todos os não‑alvos)',`<b>${fmt(m.dprime,2)}</b>${m.ceiling?TETO:''} <small>máx. ${fmt(m.dMax,2)}</small>`)+
+    mrow('d′ contra iscas (alvos vs. iscas)',`<b>${fmt(m.dLure,2)}</b>`)+
+    mrow('Acertos (alvos)',`${pct(m.hitRate)} <small>${m.hits}/${m.nTarget}</small>`)+
+    mrow('Falsos alarmes · não‑alvos',`${pct(m.faRate)} <small>${m.faN}/${m.nNon}</small>`)+
+    mrow('Falsos alarmes · iscas 2‑back / 4‑back',`${pct(m.lure2Rate)} / ${pct(m.lure4Rate)} <small>${m.faL2}/${m.nLure2} · ${m.faL4}/${m.nLure4}</small>`)+
+    mrow('Critério c',fmt(m.crit,2),'negativo = tende a responder')+
+    mrow('RT mediano nos acertos',`${fmt(m.medRT)} ms`)+
+    mrow('d′ por bloco',m.dBlocks.map(x=>fmt(x,2)).join(' · '))+
+    (b2?mrow('2‑back → 3‑back · acertos',`${pct(b2.hitRate)} → ${pct(m.hitRate)}`)+
+        mrow('2‑back → 3‑back · falsos alarmes',`${pct((b2.faN+b2.faL)/(b2.nNon+b2.nLure))} → ${pct((m.faN+m.faL)/(m.nNon+m.nLure))}`)+
+        mrow('Custo de carga (d′ 2‑back − d′ 3‑back)',`<b>${fmt(m.loadCost,2)}</b>`,m.loadCost==null?(c2?'não calculado: 2‑back no teto':'não calculado: sessão no teto'):''):'')+
+    refbox('Sem norma para esta implementação. Três leituras: a queda frente ao 2‑back; os falsos alarmes em iscas (quem responde por familiaridade cai nelas, e o d′ contra iscas despenca com os acertos ainda altos); a estabilidade entre blocos.'+(m.ceiling?' <b>Sessão no teto</b>: não discrimina acima deste nível.':'')+' n‑back correlaciona só ≈ .20 com spans complexos (Redick &amp; Lindsey, 2013): leia junto com o span.'))}
+  if(sm.span){const m=sm.span;h+=card('Span de dígitos inverso','Memória de trabalho',
+    mrow('LDSB — maior span correto',`<b>${m.ldsb}</b>${m.ldsb>=9?TETO:''}`)+
+    mrow('Ensaios corretos',`${m.totalCorrect} / 16`)+
+    mrow('Comprimento máximo tentado',String(m.maxTried))+
+    refbox('WAIS‑IV, adultos: LDSB médio ≈ 5 (DP ≈ 1,3); faixa comum 4–6. Apresentação visual tende a render spans ligeiramente maiores que a oral.'+(m.ldsb>=9?' <b>No teto</b>: 9 é o comprimento máximo do teste.':'')))}
+  if(sm.switch){const m=sm.switch;h+=card('Alternância de tarefa','Flexibilidade · shifting',
+    mrow('Custo de troca (RT)',`<b>${fmt(m.switchCost)} ms</b> <small>IC95 ±${fmt(m.ciSwitch)}</small>`)+
+    mrow('Custo de troca em erros',`${fmt(100*m.switchErr,1)} pp`)+
+    mrow('Custo de mistura (RT)',`<b>${fmt(m.mixCost)} ms</b>`)+
+    mrow('Custo de mistura em erros',`${fmt(100*m.mixErr,1)} pp`)+
+    mrow('RT mediano · puro / repetição / troca',`${fmt(m.medPure)} / ${fmt(m.medRep)} / ${fmt(m.medSw)} ms`)+
+    mrow('Acurácia · puro / repetição / troca',`${pct(m.accPure)} / ${pct(m.accRep)} / ${pct(m.accSw)}`)+
+    mrow('Timeouts',String(m.timeouts))+
+    refbox('Faixa típica com pista simultânea (CSI 0) e p(troca)=.5: custo de troca ≈ 100–300 ms; custo de mistura ≈ 100–400 ms. O custo de mistura carrega mais no fator comum que o custo de troca.'))}
+  // normas locais
+  const L=localNorms(sm);
+  let nb=`<p class="small">Sessões salvas neste navegador: <b>n = ${L.n}</b>. ${L.n<10?'Percentis, z e split‑half aparecem a partir de n = 10. Até lá, use o IC individual e o crosswalk da aba Protocolo.':'Percentis empíricos contra a amostra local (inclui esta sessão). Sinal do z orientado para "melhor = maior".'}</p>`;
+  nb+=`<table class="norms"><tr><th>Indicador</th><th class="num">Valor</th><th class="num">Pct.</th><th class="num">z</th><th class="num">Split‑half</th></tr>`+
+    L.rows.map(r=>`<tr><td>${r.ind.label}</td><td class="num">${r.ind.unit==='%'?pct(r.v,1):fmt(r.v,r.ind.dec!=null?r.ind.dec:(r.ind.unit===''?2:0))}${r.ind.unit==='ms'?' ms':''}</td><td class="num">${r.pct!=null?fmt(r.pct):'—'}</td><td class="num">${r.z!=null?fmt(r.z,2):'—'}</td><td class="num">${r.sb!=null?fmt(r.sb,2):(r.sh!=null?'r ≤ 0':'—')}</td></tr>`).join('')+`</table>`;
+  if(L.dom.length){nb+=`<h4>Compostos (z local)</h4>`+L.dom.map(d=>mrow(d.d,fmt(d.z,2))).join('')+mrow('<b>EF comum</b>',`<b>${fmt(L.ef,2)}</b>`)}
+  h+=card('Normas locais e confiabilidade','Comparação',nb+`<p class="tiny" style="margin-top:8px">Limpar a amostra local apaga apenas os resumos salvos neste navegador. <button class="btn ghost" style="min-width:0;padding:6px 10px;margin:0 0 0 6px;font-size:10px" onclick="if(confirmClear){clearLocal()}else{confirmClear=true;this.textContent='Confirmar limpeza'}">Limpar amostra local</button></p>`);
+  // exportação
+  const json=JSON.stringify({session:{id:S.id,date:S.date,device:S.device,ua:S.ua,screen:S.screen,durationMin:S.durationMin,modules:S.modules},summary:sm,trials:S.trials},null,0);
+  const cols=['module','phase','block','idx','cond','task','trans','congr','len','stim','corr','resp','rt','correct','timeout','t'];
+  const csv=cols.join(',')+'\n'+S.trials.map(t=>cols.map(c=>{const v=t[c];return v==null?'':(typeof v==='string'&&/[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':String(v))}).join(',')).join('\n');
+  h+=card('Exportar dados','Sessão',`<p class="small">O JSON contém resumo + ensaios; o CSV traz um ensaio por linha para análise externa (ICC, correlações com baterias amplas). Nada é enviado a servidor: a sessão completa existe só nesta aba até você baixar ou copiar; o navegador guarda apenas o resumo, para as normas locais.</p>
+  <div class="row"><button class="btn ghost" onclick="dl('json')">Baixar JSON</button><button class="btn ghost" onclick="dl('csv')">Baixar CSV</button><button class="btn ghost" onclick="copyText('exp-json',this)">Copiar JSON</button><button class="btn ghost" onclick="copyText('exp-csv',this)">Copiar CSV</button><button class="btn ghost" onclick="toggleExp()">Mostrar / ocultar</button></div>
+  <div id="expwrap" style="display:none"><textarea id="exp-json" readonly>${esc(json)}</textarea><textarea id="exp-csv" readonly>${esc(csv)}</textarea></div>`);
+  const d=new Date(sm.date),p2=x=>String(x).padStart(2,'0');
+  EXPORT={json,csv,base:'bateria-fe_'+(sm.id?sm.id.replace(/[^\w-]+/g,'_')+'_':'')+d.getFullYear()+p2(d.getMonth()+1)+p2(d.getDate())+'-'+p2(d.getHours())+p2(d.getMinutes())};
+  $('#view-results').innerHTML=h;
+}
+let EXPORT=null;
+function dl(kind){
+  if(!EXPORT)return;
+  try{const blob=new Blob(kind==='json'?[EXPORT.json]:['﻿',EXPORT.csv],{type:kind==='json'?'application/json':'text/csv;charset=utf-8'});
+    const a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download=EXPORT.base+'.'+kind;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000)}
+  catch(e){$('#expwrap').style.display='block'}
+}
+let confirmClear=false;
+function clearLocal(){try{localStorage.removeItem(LS_KEY)}catch(e){}confirmClear=false;if(SESSION&&window.__FE.summary)renderResults(SESSION,window.__FE.summary)}
+function toggleExp(){const w=$('#expwrap');w.style.display=w.style.display==='none'?'block':'none'}
+async function copyText(id,btn){const ta=$('#'+id);const txt=ta.value;try{await navigator.clipboard.writeText(txt);btn.textContent='Copiado';setTimeout(()=>btn.textContent=id==='exp-json'?'Copiar JSON':'Copiar CSV',1500)}catch(e){$('#expwrap').style.display='block';ta.focus();ta.select();btn.textContent='Selecione e copie'}}
+
+renderStart();
+</script>
+</body>
+</html>
