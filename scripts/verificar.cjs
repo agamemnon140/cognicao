@@ -1,22 +1,6 @@
 // Confere o gerador e o escore do 3-back sem navegador: `node scripts/verificar.cjs`.
-// Carrega o <script> do index.html num contexto com um DOM mínimo de mentira e
-// testa as funções puras. Sem dependências.
-const fs = require('fs'), path = require('path'), vm = require('vm');
-
-const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-const src = html.match(/<script>([\s\S]*?)<\/script>/)[1];
-const el = () => ({ innerHTML: '', textContent: '', style: { setProperty() {} }, classList: { toggle() {} }, dataset: {} });
-const ctx = {
-  document: { querySelector: el, querySelectorAll: () => [], addEventListener() {}, createElement: el, body: { appendChild() {} } },
-  matchMedia: () => ({ matches: false }), screen: { width: 1280, height: 800 },
-  localStorage: { getItem: () => null, setItem() {}, removeItem() {} },
-  navigator: { userAgent: 'node' }, performance, setTimeout, clearTimeout, console,
-  requestAnimationFrame: f => setTimeout(f, 0), scrollTo() {},
-};
-ctx.window = ctx;
-vm.createContext(ctx);
-vm.runInContext(src + '\n;window.__T={genNbackFixed,nback3Metrics,nbackMetrics,computeSummary,nbCounts,zinv,NB_LETTERS,NB3,MODULES,INDICATORS};', ctx);
-const { genNbackFixed, nback3Metrics, computeSummary, nbCounts, NB_LETTERS, NB3, MODULES, INDICATORS } = ctx.__T;
+const { performance } = require('perf_hooks');
+const { genNbackFixed, nback3Metrics, computeSummary, nbCounts, NB_LETTERS, NB3, MODULES, INDICATORS } = require('./carregar.cjs')();
 
 let fails = 0;
 const check = (ok, msg) => { if (!ok) { fails++; console.log('  FALHOU:', msg); } };
@@ -101,12 +85,12 @@ check(!out['mudo'].m.ceiling && out['mudo'].m.hits === 0, 'mudo');
 const two = miss => Array.from({ length: 70 }, (_, i) => { const cond = i % 3 === 2 ? 'target' : 'nontarget', go = cond === 'target' && i >= 3 * miss; return { module: 'nback', phase: 'test', idx: i, cond, resp: go ? 'GO' : null, rt: go ? 500 : null, timeout: !go, correct: go === (cond === 'target') }; });
 const summ = (miss, pol) => computeSummary({ id: 't', date: new Date().toISOString(), device: 'teclado', screen: '1x1', durationMin: 1, modules: ['nback', 'nback3'], trials: [...two(miss), ...session(pol)] });
 const sm = summ(1, R['bom (85% alvos, 25% iscas, 3% não-alvos)']);
-check(sm.version === '1.1', 'versão do resumo');
+check(sm.version === '1.2', 'versão do resumo');
 check(Number.isFinite(sm.nback3.loadCost) && Math.abs(sm.nback3.loadCost - (sm.nback.dprime - sm.nback3.dprime)) < 1e-9, 'custo de carga');
 // dois tetos têm d′ máximos diferentes: a diferença não pode virar "custo"
 check(summ(0, R['bom (85% alvos, 25% iscas, 3% não-alvos)']).nback3.loadCost === null, 'custo de carga com 2-back no teto deveria ser nulo');
 check(summ(1, R['perfeito']).nback3.loadCost === null, 'custo de carga com 3-back no teto deveria ser nulo');
-check(MODULES.map(m => m.id).join() === 'flanker,stroop,gng,nback,nback3,span,switch', 'ordem dos módulos');
+check(MODULES.filter(m => m.g === 'fe').map(m => m.id).join() === 'flanker,stroop,gng,nback,nback3,span,switch', 'ordem dos módulos da sessão A');
 check(INDICATORS.some(i => i.key === 'nback3.dprime') && INDICATORS.some(i => i.key === 'nback3.dLure'), 'indicadores das normas locais');
 console.log(`resumo · v${sm.version} · 2-back d′ ${f2(sm.nback.dprime)} · 3-back d′ ${f2(sm.nback3.dprime)} · custo de carga ${f2(sm.nback3.loadCost)}`);
 

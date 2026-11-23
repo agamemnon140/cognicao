@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bateria FE · Função Executiva</title>
+<title>Bateria cognitiva</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -84,13 +84,47 @@ textarea{width:100%;height:140px;font:12px/1.4 ui-monospace,Menlo,Consolas,monos
 .refs li{margin:5px 0 5px 18px;font-size:12.5px;color:var(--ink2)}
 ul.plain li{margin:4px 0 4px 18px}
 .note{border-left:3px solid var(--accent2);padding:6px 10px;background:var(--panel2);font-size:12.5px;margin:10px 0;border-radius:0 6px 6px 0}
+.sess{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:500;margin:14px 0 0}
+.pstage{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 8px;min-height:240px;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.hint{font-size:12.5px;color:var(--ink2);text-align:center;margin:0 4px 8px}
+.mx{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;max-width:min(288px,40vh);margin:0 auto}
+.mx svg{display:block;width:100%;aspect-ratio:1;background:#fff;border:1px solid var(--line);border-radius:6px}
+.mx svg.q{border:2px dashed var(--accent2);background:#fffdf7}.mx svg.q.show{border:2px solid var(--bad)}
+.wrap:has(.pstage) header{display:none}
+.pal{display:grid;grid-template-columns:auto auto;justify-content:center;gap:5px 22px;margin:8px auto 0}
+.palrow{display:flex;flex-direction:column;align-items:center;gap:2px}
+.palrow>span{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+.pbs{display:flex;gap:5px}
+.palrow.ring{margin:5px auto 0}.palrow.ring .pbs{gap:4px}.palrow.ring .pbtn{width:32px;height:32px;padding:2px}
+.palrow.v .pbs{flex-direction:column;gap:6px}
+.pbtn{width:40px;height:40px;padding:4px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;flex:none}
+.pbtn svg{display:block;width:100%;height:100%;pointer-events:none}
+.pbtn.on{border-color:var(--accent);box-shadow:inset 0 0 0 2px var(--accent2);background:#fbf1d8}
+.lgrow{display:flex;gap:16px;align-items:center;justify-content:center;margin-top:10px}
+.padwrap{text-align:center}.pad{display:block;width:min(50vw,190px,25vh);aspect-ratio:1;border:1px solid var(--line);border-radius:8px;background:#fffdf7;touch-action:manipulation}
+.pad [data-g],.pad [data-r],.fpad [data-c]{cursor:pointer}
+.cfm{display:flex;justify-content:center;margin-top:8px}.cfm .btn{margin-top:0}
+.btn:disabled{opacity:.35;cursor:default}
+.tbar{height:4px;background:var(--line);margin-top:8px;border-radius:2px;overflow:hidden}.tbar i{display:block;height:100%;width:0;background:var(--accent)}
+.pfb{min-height:20px;text-align:center;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;margin-top:6px}.pfb.ok{color:var(--ok)}.pfb.bad{color:var(--bad)}
+.srq{font-size:clamp(21px,6.2vw,34px);font-weight:500;text-align:center;line-height:1.55;padding:30px 4px 6px;font-variant-numeric:tabular-nums}.srq .q{color:var(--accent)}
+.sra{font-size:32px;font-weight:500;text-align:center;min-height:50px;color:var(--accent);letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.resp.kl{grid-template-columns:repeat(7,1fr);gap:6px}.resp.kl .rbtn{min-height:44px;font-size:17px;border-radius:8px;padding:4px 2px}
+.fsteps{display:flex;gap:3px;justify-content:center;align-items:center;flex-wrap:wrap}
+.fsteps svg{width:min(15.5vw,74px);aspect-ratio:1;flex:none}.fsteps .arr{color:var(--ink3);font-size:12px}
+.fsteps.n5 svg{width:min(13.2vw,74px)}.fsteps.n5{gap:1px}
+.fpad{display:block;width:min(58vw,216px);aspect-ratio:1;margin:8px auto 0;touch-action:manipulation}
+.pstage:has(.rotpair){display:flex;align-items:center;justify-content:center}
+.rotpair{display:flex;gap:8px;justify-content:center;align-items:center;min-height:min(40vw,208px)}
+.rotpair svg{width:min(40vw,208px);aspect-ratio:1;background:#fffdf7;border:1px solid var(--line);border-radius:8px;flex:none}
+code{font:12px ui-monospace,Menlo,Consolas,monospace;background:var(--panel2);padding:1px 4px;border-radius:4px}
 @media(max-width:480px){html{font-size:14px}.card{padding:14px}.wrap{padding:10px 10px 40px}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
-  <h1>Bateria FE <small>função executiva · v1.1</small></h1>
+  <h1>Bateria cognitiva <small>v1.2</small></h1>
   <nav>
     <button class="on" data-v="test" onclick="go('test')">Teste</button>
     <button data-v="results" onclick="go('results')">Resultados</button>
@@ -183,7 +217,26 @@ ul.plain li{margin:4px 0 4px 18px}
 <li><b>Sem normas próprias</b>: as faixas "típicas" exibidas nos resultados são orientação a partir da literatura em adultos jovens/meia‑idade, não normas desta implementação.</li>
 </ul>
 
-<h3>7. Caminhos para a v2</h3>
+<h3>7. Sessão B · raciocínio e espaço</h3>
+<p>Quatro tarefas para duas habilidades amplas do modelo CHC que a sessão A não toca: raciocínio fluido (Gf) e processamento visual (Gv) (Schneider &amp; McGrew, 2018). Os itens são gerados por código a partir da semente da sessão e não se repetem no reteste; <code>?seed=N</code> na URL reproduz uma forma.</p>
+<table>
+<tr><th>Tarefa</th><th>Habilidade</th><th>Item</th><th>Resposta</th><th>Extensão</th></tr>
+<tr><td>Matrizes</td><td>Gf · indução</td><td>Grade 3×3. Níveis 1–6: forma, cor, tamanho, moldura e ponto variam por linha, por coluna, em quadrado latino ou em progressão (1 a 5 regras). Níveis 7–8: XOR, E ou OU sobre um quadriculado de 9 casas e sobre o anel de pontos</td><td>Construída: monta‑se a figura que falta</td><td>24 itens · 90 s</td></tr>
+<tr><td>Séries</td><td>Gf · raciocínio sequencial</td><td>Números e letras alternados, de progressões simples a recorrências de segunda ordem, séries intercaladas e diferenças de terceira ordem</td><td>Digitada</td><td>16 itens · 60 s</td></tr>
+<tr><td>Dobradura</td><td>Gv · visualização</td><td>Papel 4×4 com 1 a 4 dobras (retas da grade e diagonais) e 1 ou 2 furos</td><td>Construída: marcam‑se as casas furadas no papel aberto</td><td>20 itens · 45 s</td></tr>
+<tr><td>Rotação 3D</td><td>Gv · rotação</td><td>Par de figuras de 10 cubos, igual ou espelhada, giradas 40°, 80°, 120° ou 160° em torno do eixo vertical</td><td>Duas teclas</td><td>72 pares · 10 s</td></tr>
+</table>
+<ul class="plain">
+<li><b>Resposta construída</b>: sem alternativas não há acerto por chute nem por eliminação. Em matrizes, impedir a eliminação de alternativas eleva a validade convergente com inteligência geral (Becker et al., 2016).</li>
+<li><b>Escada e nível</b>: as três tarefas de potência começam no nível 3, sobem 2 níveis por acerto até o primeiro erro e depois sobem ou descem 1. O escore é o nível θ em que a pessoa acertaria metade dos itens, por máxima verossimilhança num modelo logístico de inclinação fixa (1,1 por nível), com IC95 pela razão de verossimilhança. Quando o intervalo encosta no limite superior da escala, a sessão é marcada como <b>teto</b>. Quando o tempo do item acaba, vale a resposta montada até ali.</li>
+<li><b>Matrizes</b>: as famílias de regra seguem a análise do Raven por Carpenter, Just &amp; Shell (1990) e o gerador de Matzen et al. (2010). O item só conta como certo com todas as características certas; o crédito parcial é registrado à parte.</li>
+<li><b>Séries</b>: um resolvedor testa hipóteses concorrentes (progressões, diferenças de 2ª e 3ª ordem, recorrências lineares, operações alternadas, séries intercaladas) e descarta o item se alguma hipótese que explica os termos mostrados previr outro próximo termo. As séries de letras seguem o paradigma de Simon &amp; Kotovsky (1963).</li>
+<li><b>Dobradura</b>: visualização no molde do teste de Ekstrom et al. (1976). A parte menor do papel sempre dobra sobre a maior, e os furos ficam longe de qualquer borda de camada.</li>
+<li><b>Rotação 3D</b>: figuras quirais no molde de Shepard &amp; Metzler (1971). Escores: acurácia e inclinação do tempo de resposta pelo ângulo nos pares iguais corretos (ms por grau). Com acurácia abaixo de 75% a inclinação não é interpretável.</li>
+<li><b>O que falta</b>: a ordem de dificuldade dos níveis vem do número e do tipo de regras, não de calibração com dados; a escala 1–8 é interna e não se converte em QI. Comparar Gf com Gv, ou qualquer um dos dois com a sessão A, exige amostra de referência, e um composto de g só faz sentido com ela.</li>
+</ul>
+
+<h3>8. Caminhos para a v2 da sessão A</h3>
 <ul class="plain small">
 <li>Trocar os escores‑diferença por tarefas <b>baseadas em acurácia com prazo adaptativo</b> (Draheim et al., 2021) ou pelas tarefas <b>"Squared"</b> (Burgoyne et al., 2023): ≈ 3 min cada, consistência interna ≈ .95, reteste ≈ .67, carga ≈ .70 no fator de controle atencional. Ganho de ~3–5× em variância confiável e preditiva sobre Stroop/flanker clássicos.</li>
 <li>Stop‑Signal com escada (Verbruggen et al., 2019) no lugar do Go/No‑Go, se houver 7–8 min a mais: SSRT é o índice canônico de inibição de resposta.</li>
@@ -198,14 +251,17 @@ ul.plain li{margin:4px 0 4px 18px}
 <h2>Referências</h2>
 <ol class="refs">
 <li>Anwyl‑Irvine, A., Dalmaijer, E. S., Hodges, N., &amp; Evershed, J. K. (2021). Realistic precision and accuracy of online experiment platforms, web browsers, and devices. <i>Behavior Research Methods, 53</i>, 1407–1425.</li>
+<li>Becker, N., Schmitz, F., Falk, A. M., Feldbrügge, J., Recktenwald, D. R., Wilhelm, O., Preckel, F., &amp; Spinath, F. M. (2016). Preventing response elimination strategies improves the convergent validity of figural matrices. <i>Journal of Intelligence, 4</i>(1), 2.</li>
 <li>Bridges, D., Pitiot, A., MacAskill, M. R., &amp; Peirce, J. W. (2020). The timing mega‑study: Comparing a range of experiment generators, both lab‑based and online. <i>PeerJ, 8</i>, e9414.</li>
 <li>Buchanan, T. (2016). Self‑report measures of executive function problems correlate with personality, not performance‑based executive function measures, in nonclinical samples. <i>Psychological Assessment, 28</i>(4), 372–385.</li>
 <li>Burgoyne, A. P., Tsukahara, J. S., Mashburn, C. A., Pak, R., &amp; Engle, R. W. (2023). Nature and measurement of attention control. <i>Journal of Experimental Psychology: General, 152</i>(8).</li>
+<li>Carpenter, P. A., Just, M. A., &amp; Shell, P. (1990). What one intelligence test measures: A theoretical account of the processing in the Raven Progressive Matrices Test. <i>Psychological Review, 97</i>(3), 404–431.</li>
 <li>Crump, M. J. C., McDonnell, J. V., &amp; Gureckis, T. M. (2013). Evaluating Amazon's Mechanical Turk as a tool for experimental behavioral research. <i>PLoS ONE, 8</i>(3), e57410.</li>
 <li>Dang, J., King, K. M., &amp; Inzlicht, M. (2020). Why are self‑report and behavioral measures weakly correlated? <i>Trends in Cognitive Sciences, 24</i>(4), 267–269.</li>
 <li>Delis, D. C., Kaplan, E., &amp; Kramer, J. H. (2001). <i>Delis–Kaplan Executive Function System (D‑KEFS)</i>. Pearson.</li>
 <li>Diamond, A. (2013). Executive functions. <i>Annual Review of Psychology, 64</i>, 135–168.</li>
 <li>Draheim, C., Tsukahara, J. S., Martin, J. D., Mashburn, C. A., &amp; Engle, R. W. (2021). A toolbox approach to improving the measurement of attention control. <i>Journal of Experimental Psychology: General, 150</i>(2), 242–275.</li>
+<li>Ekstrom, R. B., French, J. W., Harman, H. H., &amp; Dermen, D. (1976). <i>Manual for kit of factor‑referenced cognitive tests</i>. Educational Testing Service.</li>
 <li>Enkavi, A. Z., Eisenberg, I. W., Bissett, P. G., Mazza, G. L., MacKinnon, D. P., Marsch, L. A., &amp; Poldrack, R. A. (2019). Large‑scale analysis of test–retest reliabilities of self‑regulation measures. <i>PNAS, 116</i>(12), 5472–5477.</li>
 <li>Friedman, N. P., &amp; Miyake, A. (2017). Unity and diversity of executive functions: Individual differences as a window on cognitive structure. <i>Cortex, 86</i>, 186–204.</li>
 <li>Gray, J. R., Chabris, C. F., &amp; Braver, T. S. (2003). Neural mechanisms of general fluid intelligence. <i>Nature Neuroscience, 6</i>(3), 316–322.</li>
@@ -216,12 +272,16 @@ ul.plain li{margin:4px 0 4px 18px}
 <li>Kane, M. J., Conway, A. R. A., Miura, T. K., &amp; Colflesh, G. J. H. (2007). Working memory, attention control, and the N‑back task: A question of construct validity. <i>Journal of Experimental Psychology: Learning, Memory, and Cognition, 33</i>(3), 615–622.</li>
 <li>Karr, J. E., Areshenkoff, C. N., Rast, P., Hofer, S. M., Iverson, G. L., &amp; Garcia‑Barrera, M. A. (2018). The unity and diversity of executive functions: A systematic review and re‑analysis of latent variable studies. <i>Psychological Bulletin, 144</i>(11), 1147–1185.</li>
 <li>Liesefeld, H. R., &amp; Janczyk, M. (2019). Combining speed and accuracy to control for speed–accuracy trade‑offs(?). <i>Behavior Research Methods, 51</i>, 40–60.</li>
+<li>Matzen, L. E., Benz, Z. O., Dixon, K. R., Posey, J., Kroger, J. K., &amp; Speed, A. E. (2010). Recreating Raven's: Software for systematically generating large numbers of Raven‑like matrix problems with normed properties. <i>Behavior Research Methods, 42</i>(2), 525–541.</li>
 <li>Miyake, A., Friedman, N. P., Emerson, M. J., Witzki, A. H., Howerter, A., &amp; Wager, T. D. (2000). The unity and diversity of executive functions and their contributions to complex "frontal lobe" tasks: A latent variable analysis. <i>Cognitive Psychology, 41</i>(1), 49–100.</li>
 <li>Monsell, S. (2003). Task switching. <i>Trends in Cognitive Sciences, 7</i>(3), 134–140.</li>
 <li>Redick, T. S., &amp; Lindsey, D. R. B. (2013). Complex span and n‑back measures of working memory: A meta‑analysis. <i>Psychonomic Bulletin &amp; Review, 20</i>, 1102–1113.</li>
 <li>Rey‑Mermet, A., Gade, M., &amp; Oberauer, K. (2018). Should we stop thinking about inhibition? Searching for individual and age differences in inhibition ability. <i>Journal of Experimental Psychology: Learning, Memory, and Cognition, 44</i>(4), 501–526.</li>
 <li>Rouder, J. N., &amp; Haaf, J. M. (2019). A psychometrics of individual differences in experimental tasks. <i>Psychonomic Bulletin &amp; Review, 26</i>, 452–467.</li>
 <li>Schmiedek, F., Lövdén, M., &amp; Lindenberger, U. (2014). A task is a task is a task: Putting complex span, n‑back, and other working memory indicators in psychometric context. <i>Frontiers in Psychology, 5</i>, 1475.</li>
+<li>Schneider, W. J., &amp; McGrew, K. S. (2018). The Cattell–Horn–Carroll theory of cognitive abilities. In D. P. Flanagan &amp; E. M. McDonough (Eds.), <i>Contemporary intellectual assessment: Theories, tests, and issues</i> (4th ed., pp. 73–163). Guilford Press.</li>
+<li>Shepard, R. N., &amp; Metzler, J. (1971). Mental rotation of three‑dimensional objects. <i>Science, 171</i>(3972), 701–703.</li>
+<li>Simon, H. A., &amp; Kotovsky, K. (1963). Human acquisition of concepts for sequential patterns. <i>Psychological Review, 70</i>(6), 534–546.</li>
 <li>Snyder, H. R., Friedman, N. P., &amp; Hankin, B. L. (2021). Associations between task performance and self‑report measures of cognitive control: Shared versus distinct abilities. <i>Assessment, 28</i>(4), 1080–1096.</li>
 <li>Toplak, M. E., West, R. F., &amp; Stanovich, K. E. (2013). Practitioner Review: Do performance‑based measures and ratings of executive function assess the same construct? <i>Journal of Child Psychology and Psychiatry, 54</i>(2), 131–143.</li>
 <li>Townsend, J. T., &amp; Ashby, F. G. (1983). <i>Stochastic modeling of elementary psychological processes</i>. Cambridge University Press.</li>
@@ -265,17 +325,24 @@ const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[
 
 /* ───────────────────────── estado ───────────────────────── */
 const MODULES=[
- {id:'flanker',name:'Flanker (setas)',domain:'Controle atencional',min:4},
- {id:'stroop',name:'Stroop (cores)',domain:'Controle atencional · interferência',min:4},
- {id:'gng',name:'Go/No‑Go',domain:'Inibição de resposta',min:3},
- {id:'nback',name:'2‑back (letras)',domain:'Atualização · memória de trabalho',min:3},
- {id:'nback3',name:'3‑back (letras)',domain:'Memória de trabalho · carga alta',min:8},
- {id:'span',name:'Span de dígitos inverso',domain:'Memória de trabalho',min:3},
- {id:'switch',name:'Alternância de tarefa',domain:'Flexibilidade · shifting',min:5},
+ {id:'flanker',g:'fe',name:'Flanker (setas)',domain:'Controle atencional',min:4},
+ {id:'stroop',g:'fe',name:'Stroop (cores)',domain:'Controle atencional · interferência',min:4},
+ {id:'gng',g:'fe',name:'Go/No‑Go',domain:'Inibição de resposta',min:3},
+ {id:'nback',g:'fe',name:'2‑back (letras)',domain:'Atualização · memória de trabalho',min:3},
+ {id:'nback3',g:'fe',name:'3‑back (letras)',domain:'Memória de trabalho · carga alta',min:8},
+ {id:'span',g:'fe',name:'Span de dígitos inverso',domain:'Memória de trabalho',min:3},
+ {id:'switch',g:'fe',name:'Alternância de tarefa',domain:'Flexibilidade · shifting',min:5},
+ {id:'matrix',g:'rs',name:'Matrizes',domain:'Raciocínio fluido · indução',min:18},
+ {id:'series',g:'rs',name:'Séries de números e letras',domain:'Raciocínio fluido · sequências',min:8},
+ {id:'fold',g:'rs',name:'Dobradura de papel',domain:'Visuoespacial · visualização',min:8},
+ {id:'rot',g:'rs',name:'Rotação mental 3D',domain:'Visuoespacial · rotação',min:7},
 ];
 const WM_MODULES=['nback','nback3','span'];
+const GROUPS=[{g:'fe',name:'Sessão A · função executiva e memória de trabalho',min:'35–40'},{g:'rs',name:'Sessão B · raciocínio e espaço',min:'40'}];
+const EF_DOMAINS=['Controle atencional','Memória de trabalho','Alternância'];
+function sessionSeed(){try{const q=new URLSearchParams(location.search).get('seed');if(q!==null&&/^\d{1,10}$/.test(q))return Number(q)>>>0}catch(e){}return(Math.random()*4294967296)>>>0}
 let SESSION=null;
-window.__FE={current:null,onTrial:null,summary:null};
+window.__FE={current:null,onTrial:null,summary:null,dev:null};
 const LS_KEY='fe_bateria_v1';
 function loadLocal(){try{const a=JSON.parse(localStorage.getItem(LS_KEY)||'[]');return Array.isArray(a)?a:[]}catch(e){return[]}}
 function saveLocal(s){try{const a=loadLocal();a.push(s);localStorage.setItem(LS_KEY,JSON.stringify(a))}catch(e){}}
@@ -287,18 +354,18 @@ function go(v){document.querySelectorAll('.view').forEach(x=>x.classList.toggle(
 function renderStart(){
   const local=loadLocal();
   $('#view-test').innerHTML=`<div class="card">
-  <h2>Bateria de função executiva</h2>
-  <p>Sete tarefas computadorizadas, ≈ 35–40 min, cobrindo controle atencional, inibição de resposta, memória de trabalho e alternância. Administração e escore fixos; comparação por normas locais e por crosswalk com baterias amplas (aba Protocolo).</p>
+  <h2>Bateria cognitiva</h2>
+  <p>Duas sessões independentes. <b>A</b>: função executiva e memória de trabalho, sete tarefas. <b>B</b>: raciocínio fluido e habilidade visuoespacial, quatro tarefas. Faça uma por vez: cansaço contamina o resultado. Administração e escore fixos, sem normas populacionais (aba Protocolo).</p>
   <p class="small">Condições: ambiente silencioso, sem interrupções, tela com brilho normal. ${TOUCH?'No celular, segure o aparelho com as duas mãos e responda com os polegares.':'No computador, mantenha os dedos sobre as teclas indicadas (F / J, ou 1–4 no Stroop).'} Não troque de aba durante os ensaios.</p>
   <label for="pid">Identificador da sessão (opcional)</label><input type="text" id="pid" placeholder="ex.: S‑01" autocomplete="off">
-  <label>Módulos <span class="tiny">· <a href="#" id="selall">todos</a> · <a href="#" id="selwm">só memória de trabalho</a></span></label>
-  <div class="mods">${MODULES.map(m=>`<label class="mod"><input type="checkbox" data-m="${m.id}" checked><span><div class="n">${m.name} <span class="tiny">≈ ${m.min} min</span></div><div class="d">${m.domain}</div></span></label>`).join('')}</div>
+  <label>Módulos <span class="tiny">· marcar: <a href="#" data-sel="fe">sessão A</a> · <a href="#" data-sel="rs">sessão B</a> · <a href="#" data-sel="wm">só memória de trabalho</a></span></label>
+  ${GROUPS.map(G=>`<div class="sess">${G.name} <span class="tiny">≈ ${G.min} min</span></div><div class="mods">${MODULES.filter(m=>m.g===G.g).map(m=>`<label class="mod"><input type="checkbox" data-m="${m.id}"${m.g==='fe'?' checked':''}><span><div class="n">${m.name} <span class="tiny">≈ ${m.min} min</span></div><div class="d">${m.domain}</div></span></label>`).join('')}</div>`).join('')}
   <p class="tiny">Dispositivo detectado: ${TOUCH?'toque':'teclado'} · ${screen.width}×${screen.height} · amostra local salva neste navegador: n = ${local.length}</p>
   <button class="btn" id="start">Iniciar</button>
   </div>`;
   $('#start').onclick=startBattery;
   const sel=f=>e=>{e.preventDefault();document.querySelectorAll('.mod input').forEach(i=>i.checked=f(i.dataset.m))};
-  $('#selall').onclick=sel(()=>true);$('#selwm').onclick=sel(m=>WM_MODULES.includes(m));
+  document.querySelectorAll('[data-sel]').forEach(a=>{const k=a.dataset.sel;a.onclick=sel(m=>k==='wm'?WM_MODULES.includes(m):MODULES.find(x=>x.id===m).g===k)});
 }
 
 /* ───────────────────────── palco de ensaios ───────────────────────── */
@@ -571,12 +638,511 @@ async function switchBlock(phase,block,n,fb){
   return nc/n;
 }
 
+/* ═════════════════════════ FASE 1 · raciocínio e espaço ═════════════════════════ */
+/* ───────────────────────── semente, escada e nível ───────────────────────── */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function hashMix(){let h=0x811C9DC5;for(const k of arguments){const s=String(k)+'|';for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,0x01000193)}}return h>>>0}
+// Cada item tem o próprio sorteio, função de (semente, módulo, índice, nível): o item não depende do caminho da escada.
+function itemRng(seed,mod,idx,level){
+  const r=mulberry32(hashMix(seed,mod,idx,level));for(let i=0;i<4;i++)r();
+  const o=()=>r();o.int=n=>Math.floor(r()*n);o.range=(a,b)=>a+Math.floor(r()*(b-a+1));o.pick=a=>a[Math.floor(r()*a.length)];o.chance=p=>r()<p;
+  o.shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};return o;
+}
+const tmI=ms=>FAST()?1500:ms;                // limite por item nos testes de potência
+const LV={min:1,max:8,start:3,slope:1.1};
+// Escada 1 acima / 1 abaixo, com passo 2 até o primeiro erro.
+function makeStair(){let level=LV.start,ramp=true;const hist=[];return{get level(){return level},hist,update(ok){hist.push({level,ok});if(!ok)ramp=false;const st=ramp?2:1;level=Math.max(LV.min,Math.min(LV.max,level+(ok?st:-st)))}}}
+// Nível estimado por máxima verossimilhança: P(acerto) = 1/(1+e^(−a(θ−nível))). Resposta construída, sem acerto por chute.
+// θ é o nível em que a pessoa acertaria metade dos itens. IC95 pela queda de 1,92 na log-verossimilhança.
+function fitTheta(hist){
+  const LO=0,HI=LV.max+1.5,ll=t=>{let s=0;for(const h of hist){const p=Math.min(1-1e-6,Math.max(1e-6,1/(1+Math.exp(-LV.slope*(t-h.level)))));s+=Math.log(h.ok?p:1-p)}return s};
+  let best=-Infinity,theta=LO;const G=[],n=Math.round((HI-LO)/0.05);
+  for(let i=0;i<=n;i++){const t=LO+i*0.05,l=ll(t);G.push([t,l]);if(l>best){best=l;theta=t}}
+  const ins=G.filter(g=>g[1]>=best-1.92).map(g=>g[0]),lo=Math.min(...ins),hi=Math.max(...ins);
+  return{theta,lo,hi,ceiling:hist.length>0&&hi>=HI-1e-9,floor:hist.length>0&&lo<=LO+1e-9,n:hist.length};
+}
+
+/* ───────────────────────── palco para itens construídos ───────────────────────── */
+let ITEM=null;
+function buildPanel(label){
+  $('#view-test').innerHTML=`<div class="card tight"><div class="pstage" id="pstage"></div><div class="pfb" id="pfb"></div><div class="tbar"><i id="tbar"></i></div><div class="resp" id="resp"></div><div class="prog"><i id="progbar"></i></div><div class="modlabel"><span>${label}</span><span id="progtxt"></span></div></div>`;
+}
+function startBar(limit,onset){let raf=0,on=true;const bar=$('#tbar'),tick=()=>{const f=Math.max(0,1-(performance.now()-onset)/limit);if(bar)bar.style.width=(100*f)+'%';if(on&&f>0)raf=requestAnimationFrame(tick)};tick();return()=>{on=false;cancelAnimationFrame(raf)}}
+// Monta o item e espera Confirmar ou o fim do tempo; quando o tempo acaba, vale o que estiver montado.
+async function runItem(o){
+  const P=$('#pstage');let resolve,done=false,onset=0,to=0,stop=()=>{};
+  const result=new Promise(r=>{resolve=r});
+  const fin=timeout=>{if(done)return;done=true;clearTimeout(to);stop();ITEM=null;P.onclick=null;resolve({answer:o.getAnswer(),rt:performance.now()-onset,timeout})};
+  // o item já aceita Confirmar no mesmo quadro em que aparece
+  await paint(()=>{P.innerHTML=o.html;o.bind&&o.bind(P);onset=performance.now();ITEM={confirm:()=>fin(false)}});
+  if(!done){stop=startBar(o.limit,onset);to=setTimeout(()=>fin(true),Math.max(0,o.limit-(performance.now()-onset)))}
+  return result;
+}
+async function pfeedback(ok,msg,ms=900){const f=$('#pfb');if(!f)return;f.textContent=msg||(ok?'Correto':'Errado');f.className='pfb '+(ok?'ok':'bad');await sleep(tm(ms));f.textContent='';f.className='pfb'}
+const CONFIRM=`<div class="cfm"><button type="button" class="btn" id="confirm" disabled>Confirmar</button></div>`;
+
+/* ───────────────────────── módulo: matrizes ───────────────────────── */
+// Matrizes 3×3 geradas por regras. Níveis 1–6: atributos (forma, cor, tamanho, moldura, ponto) com regras por linha,
+// por coluna, em quadrado latino ("distribuição de três") e progressão. Níveis 7–8: operações lógicas (XOR, E, OU)
+// sobre um quadriculado de 9 casas e sobre o anel de pontos. A resposta é construída, não escolhida.
+const MX={N:24,limit:90000,SHAPES:['circ','sq','tri','dia','plus','star'],ATTR:['shape','fill','size','frame'],
+  plan:{1:[0,1,0],2:[0,2,0],3:[1,1,0],4:[2,1,0],5:[3,0,1],6:[4,0,2]}};   // nível → [latinos, simples, ponto: 0 / 1 direção / 2 direções]
+const INK='#2a2520',FILLS=['#ffffff','#a9a49b','#2a2520'];
+const popc=m=>{let c=0;for(;m;m>>>=1)c+=m&1;return c};
+const LOGIC={xor:(x,y)=>x^y,and:(x,y)=>x&y,or:(x,y)=>x|y};
+function genLogicCells(R,bits,op){
+  const F=LOGIC[op],dens={xor:.45,and:.64,or:.27}[op];
+  for(;;){
+    const m=()=>{let v=0;for(let i=0;i<bits;i++)if(R.chance(dens))v|=1<<i;return v};
+    const a=m(),b=m(),d=m(),e=m(),c=F(a,b),f=F(d,e),g=F(a,d),h=F(b,e),i=F(g,h),cells=[a,b,c,d,e,f,g,h,i];
+    if(cells.some(x=>x===0)||new Set(cells).size<9)continue;
+    if(!(g&h)||!(g^h))continue;                       // a resposta difere sob XOR, E e OU
+    let both=0,one=0;for(const[x,y]of[[a,b],[d,e],[a,d],[b,e]]){both|=x&y;one|=x^y}
+    if(popc(both)<2||popc(one)<2)continue;            // as linhas e colunas completas bastam para identificar a operação
+    return cells;
+  }
+}
+function genMatrix(level,R,demo){
+  const it={level,family:level>=7?'logic':'attr',shapes:R.shuffle([0,1,2,3,4,5]).slice(0,3),rules:{},useRing:false};
+  const perm=()=>R.shuffle([0,1,2]),lat=()=>{const p=perm(),k=R.pick([1,2]);return(r,c)=>p[(r+k*c)%3]};
+  const ringProg=dims=>{const s0=R.int(8),st=()=>R.pick([1,2,3,-1,-2,-3]);let a=st(),b=st();if(dims===1){if(R.chance(.5))a=0;else b=0}
+    it.rules.ring=dims===1?(a?'prog-col':'prog-lin'):'prog-2d';it.useRing=true;return(r,c)=>1<<((((s0+a*c+b*r)%8)+8)%8)};
+  if(it.family==='attr'){
+    const[nL,nS,sat]=MX.plan[level],attrs=R.shuffle(MX.ATTR),f={};let d=R.pick(['lin','col']);
+    attrs.forEach((a,i)=>{
+      if(i<nL){f[a]=lat();it.rules[a]='latino'}
+      else if(i<nL+nS){const p=perm(),dir=d;d=d==='lin'?'col':'lin';f[a]=dir==='lin'?(r,c)=>p[r]:(r,c)=>p[c];it.rules[a]=dir}
+      else{const v=R.int(3);f[a]=()=>v;it.rules[a]='const'}});
+    const fr=sat?ringProg(sat):null;
+    it.cells=[];for(let r=0;r<3;r++)for(let c=0;c<3;c++){const st={};for(const a of MX.ATTR)st[a]=f[a](r,c);st.ring=fr?fr(r,c):0;it.cells.push(st)}
+    it.fields=it.useRing?[...MX.ATTR,'ring']:MX.ATTR;
+  }else{
+    const ops=demo?['or']:level===7?[R.pick(['xor','xor','and','or'])]:R.shuffle(['xor',R.pick(['and','or'])]);
+    const g=genLogicCells(R,9,ops[0]);it.rules.grid=ops[0];let ring=null,ff;
+    if(demo){const v=R.int(3);ff=()=>v;it.rules.frame='const'}else{ff=lat();it.rules.frame='latino'}
+    if(!demo&&level===7){const fr=ringProg(2);ring=[];for(let r=0;r<3;r++)for(let c=0;c<3;c++)ring.push(fr(r,c))}
+    if(!demo&&level===8){ring=genLogicCells(R,8,ops[1]);it.rules.ring=ops[1];it.useRing=true}
+    it.cells=g.map((m,i)=>({grid:m,ring:ring?ring[i]:0,frame:ff(Math.floor(i/3),i%3)}));
+    it.fields=it.useRing?['grid','ring','frame']:['grid','frame'];
+  }
+  it.answer=it.cells[8];it.sig=Object.keys(it.rules).sort().map(k=>k+':'+it.rules[k]).join(' ');
+  return it;
+}
+const mxEq=(a,it)=>!!a&&it.fields.every(k=>a[k]===it.answer[k]);
+const mxPart=(a,it)=>a?it.fields.filter(k=>a[k]===it.answer[k]).length/it.fields.length:0;
+const mxEnc=(a,it)=>a?it.fields.map(k=>k[0]+(a[k]==null?'-':a[k])).join(''):'';
+function mxShape(name,r){
+  const P=a=>a.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+  if(name==='circ')return`<circle cx="50" cy="50" r="${r}"/>`;
+  if(name==='sq'){const h=r*.86;return`<rect x="${50-h}" y="${50-h}" width="${2*h}" height="${2*h}"/>`}
+  if(name==='tri')return`<polygon points="${P([[50,50-r*1.12],[50+r*1.05,50+r*.78],[50-r*1.05,50+r*.78]])}"/>`;
+  if(name==='dia')return`<polygon points="${P([[50,50-r*1.18],[50+r*.86,50],[50,50+r*1.18],[50-r*.86,50]])}"/>`;
+  if(name==='plus'){const a=r*.36,b=r*1.05;return`<polygon points="${P([[50-a,50-b],[50+a,50-b],[50+a,50-a],[50+b,50-a],[50+b,50+a],[50+a,50+a],[50+a,50+b],[50-a,50+b],[50-a,50+a],[50-b,50+a],[50-b,50-a],[50-a,50-a]])}"/>`}
+  const pts=[];for(let i=0;i<10;i++){const rad=i%2?r*.5:r*1.2,an=Math.PI*i/5;pts.push([50+rad*Math.sin(an),50-rad*Math.cos(an)])}
+  return`<polygon points="${P(pts)}"/>`;
+}
+function mxFrame(v){
+  if(v===0)return`<rect x="7" y="7" width="86" height="86" rx="2"/>`;
+  if(v===1)return`<circle cx="50" cy="50" r="44"/>`;
+  const p=[];for(let i=0;i<6;i++){const an=Math.PI/3*i;p.push((50+47*Math.sin(an)).toFixed(1)+','+(50-47*Math.cos(an)).toFixed(1))}
+  return`<polygon points="${p.join(' ')}"/>`;
+}
+const ringXY=i=>{const an=Math.PI/4*i;return[+(50+34*Math.sin(an)).toFixed(1),+(50-34*Math.cos(an)).toFixed(1)]};
+const gridXY=i=>[32+(i%3)*12.5,32+Math.floor(i/3)*12.5];
+function mxCell(st,it){ // conteúdo SVG de uma célula (viewBox 0 0 100 100)
+  let s='';
+  if(st.frame!=null)s+=`<g fill="none" stroke="${INK}" stroke-width="2.4">${mxFrame(st.frame)}</g>`;
+  if(it.family==='attr'){if(st.shape!=null)s+=`<g fill="${FILLS[st.fill==null?0:st.fill]}" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round">${mxShape(MX.SHAPES[it.shapes[st.shape]],[11,16.5,22][st.size==null?1:st.size])}</g>`}
+  else for(let i=0;i<9;i++){const[x,y]=gridXY(i),on=st.grid>>i&1;s+=`<rect x="${x}" y="${y}" width="11" height="11" fill="${on?INK:'#fff'}" stroke="${on?INK:'#cfc7b8'}" stroke-width="1"/>`}
+  for(let i=0;i<8;i++)if(st.ring>>i&1){const[x,y]=ringXY(i);s+=`<circle cx="${x}" cy="${y}" r="4.6" fill="${INK}"/>`}
+  return s;
+}
+function mxAnsSvg(a,it){const blank=it.family==='attr'&&a.shape==null&&a.frame==null&&!a.ring;return blank?`<text x="50" y="64" text-anchor="middle" font-size="42" fill="#c8a96e" font-family="Georgia,serif">?</text>`:mxCell(a,it)}
+function mxMatrixHtml(it,a){return`<div class="mx">${it.cells.map((st,i)=>i===8?`<svg viewBox="0 0 100 100" class="q" id="mxq">${mxAnsSvg(a,it)}</svg>`:`<svg viewBox="0 0 100 100">${mxCell(st,it)}</svg>`).join('')}</div>`}
+function mxPaletteHtml(it){
+  const btn=(a,v,inner)=>`<button type="button" class="pbtn" data-a="${a}" data-v="${v}"><svg viewBox="0 0 100 100">${inner}</svg></button>`;
+  const frames=[0,1,2].map(v=>btn('frame',v,`<g fill="none" stroke="${INK}" stroke-width="6">${mxFrame(v)}</g>`)).join('');
+  if(it.family==='attr'){
+    const g=(inner,fill)=>`<g fill="${fill||'#fff'}" stroke="${INK}" stroke-width="5" stroke-linejoin="round">${inner}</g>`;
+    const row=(label,bs,cls)=>`<div class="palrow${cls||''}"><span>${label}</span><div class="pbs">${bs}</div></div>`;
+    let h=`<div class="pal">`+row('Forma',[0,1,2].map(v=>btn('shape',v,g(mxShape(MX.SHAPES[it.shapes[v]],30)))).join(''))
+      +row('Cor',FILLS.map((f,v)=>btn('fill',v,g(`<circle cx="50" cy="50" r="30"/>`,f))).join(''))
+      +row('Tamanho',[14,24,36].map((r,v)=>btn('size',v,g(`<circle cx="50" cy="50" r="${r}"/>`))).join(''))
+      +row('Moldura',frames)+`</div>`;
+    if(it.useRing)h+=row('Ponto',[0,1,2,3,4,5,6,7].map(i=>{const[x,y]=ringXY(i);return btn('ring',i,`<circle cx="50" cy="50" r="34" fill="none" stroke="#cfc7b8" stroke-width="4"/><circle cx="${x}" cy="${y}" r="12" fill="${INK}"/>`)}).join(''),' ring');
+    return h;
+  }
+  let pad=`<svg viewBox="0 0 100 100" class="pad">`;
+  for(let i=0;i<9;i++){const[x,y]=gridXY(i);pad+=`<rect data-g="${i}" x="${x}" y="${y}" width="11" height="11" fill="#fff" stroke="#9a8c78" stroke-width="1"/>`}
+  if(it.useRing)for(let i=0;i<8;i++){const[x,y]=ringXY(i);pad+=`<circle data-r="${i}" cx="${x}" cy="${y}" r="6.5" fill="#fff" stroke="#9a8c78" stroke-width="1"/>`}
+  return`<div class="lgrow"><div class="padwrap">${pad}</svg><div class="tiny">toque nas casas${it.useRing?' e nos pontos':''}</div></div><div class="palrow v"><span>Moldura</span><div class="pbs">${frames}</div></div></div>`;
+}
+function mxItem(it,hint){
+  const a=it.family==='attr'?{shape:null,fill:null,size:null,frame:null,ring:0}:{grid:0,ring:0,frame:null};
+  const complete=()=>it.family==='attr'?MX.ATTR.every(k=>a[k]!=null)&&(!it.useRing||a.ring!==0):a.frame!=null;
+  cur({module:'matrix',type:'construct',family:it.family,level:it.level,answer:it.answer,useRing:it.useRing});
+  return runItem({limit:tmI(MX.limit),html:(hint?`<div class="hint">${hint}</div>`:'')+mxMatrixHtml(it,a)+mxPaletteHtml(it)+CONFIRM,getAnswer:()=>Object.assign({},a),
+    bind:P=>{
+      const upd=()=>{$('#mxq').innerHTML=mxAnsSvg(a,it);
+        P.querySelectorAll('[data-a]').forEach(b=>{const k=b.dataset.a,v=+b.dataset.v;b.classList.toggle('on',k==='ring'?a.ring===1<<v:a[k]===v)});
+        P.querySelectorAll('[data-g]').forEach(e=>e.setAttribute('fill',a.grid>>+e.dataset.g&1?INK:'#fff'));
+        P.querySelectorAll('[data-r]').forEach(e=>e.setAttribute('fill',a.ring>>+e.dataset.r&1?INK:'#fff'));
+        $('#confirm').disabled=!complete()};
+      P.onclick=e=>{const t=e.target.closest('[data-a],[data-g],[data-r],#confirm');if(!t)return;
+        if(t.id==='confirm'){if(complete()&&ITEM)ITEM.confirm();return}
+        if(t.dataset.a){const k=t.dataset.a,v=+t.dataset.v;if(k==='ring')a.ring=1<<v;else a[k]=v}
+        else if(t.dataset.g!=null)a.grid^=1<<+t.dataset.g;else a.ring^=1<<+t.dataset.r;
+        upd()}}});
+}
+async function runMatrix(){
+  const n=FAST()?6:MX.N;
+  await instruct('Matrizes',`<p>Cada item mostra oito figuras numa grade 3×3. As figuras mudam segundo regras que valem em todas as linhas e em todas as colunas. Falta a figura do canto inferior direito.</p><p><b>Monte a figura que falta</b> escolhendo cada característica nos botões abaixo da grade, e confirme. Não há alternativas prontas: a figura precisa estar certa em tudo.</p><p class="small">${n} itens, até 90 s cada (a barra mostra o tempo). A dificuldade sobe quando você acerta e desce quando erra, então errar faz parte. Quando o tempo acaba, vale o que estiver montado.</p>`,'Começar prática');
+  buildPanel('Matrizes · prática');
+  const prat=[[1,false,'Aqui só uma característica muda.'],[3,false,'Agora duas características mudam, cada uma com sua regra.'],[7,true,'Neste tipo, a terceira figura de cada linha resulta das duas primeiras. Toque nas casas para pintá‑las.']];
+  for(let k=0;k<prat.length;k++){
+    const[lv,demo,hint]=prat[k],it=genMatrix(lv,itemRng(SESSION.seed,'matrix-pratica',k,lv),demo);prog(k,prat.length);
+    const r=await mxItem(it,hint),ok=mxEq(r.answer,it);
+    rec({module:'matrix',phase:'practice',idx:k,level:lv,cond:it.family,stim:it.sig,corr:mxEnc(it.answer,it),resp:mxEnc(r.answer,it),rt:Math.round(r.rt),correct:ok,timeout:r.timeout});
+    if(!ok){const q=$('#mxq');if(q){q.innerHTML=mxCell(it.answer,it);q.classList.add('show')}}
+    await pfeedback(ok,ok?'Correto':'A figura certa é a que aparece agora',ok?900:2600);
+  }
+  await instruct('Matrizes — teste',`<p>Agora sem dicas nem correção. Os itens ficam difíceis de propósito: ninguém acerta todos.</p>`,'Começar');
+  buildPanel('Matrizes');const st=makeStair();
+  for(let i=0;i<n;i++){
+    const lv=st.level,it=genMatrix(lv,itemRng(SESSION.seed,'matrix',i,lv));prog(i,n);
+    const r=await mxItem(it),ok=mxEq(r.answer,it);st.update(ok);
+    rec({module:'matrix',phase:'test',idx:i,level:lv,cond:it.family,stim:it.sig,corr:mxEnc(it.answer,it),resp:mxEnc(r.answer,it),rt:Math.round(r.rt),correct:ok,timeout:r.timeout,part:+mxPart(r.answer,it).toFixed(2)});
+    $('#pstage').innerHTML='';await sleep(tm(350));
+  }
+}
+
+/* ───────────────────────── módulo: séries ───────────────────────── */
+// Séries de números e de letras geradas por modelos de regra. Um item só entra se todas as hipóteses
+// do resolvedor que explicam os termos mostrados preverem o mesmo próximo termo.
+const SR={N:16,limit:60000};
+const sdiff=a=>a.slice(1).map((x,i)=>x-a[i]);
+const SRM={ // modelos de fluxo: próximo termo se a sequência couber com folga, senão undefined
+  konst:a=>a.length>=2&&a.every(x=>x===a[0])?a[0]:undefined,
+  pa:a=>{if(a.length<3)return;const d=a[1]-a[0];for(let i=2;i<a.length;i++)if(a[i]-a[i-1]!==d)return;return a[a.length-1]+d},
+  pg:a=>{if(a.length<3||a.some(x=>x===0)||a[1]===a[0])return;for(let i=2;i<a.length;i++)if(a[i]*a[0]!==a[i-1]*a[1])return;const nx=a[a.length-1]*a[1]/a[0];return Number.isInteger(nx)?nx:undefined},
+  d2:a=>{if(a.length<4)return;const d=sdiff(a),e=sdiff(d);if(!e.every(x=>x===e[0]))return;return a[a.length-1]+d[d.length-1]+e[0]},
+  dg:a=>{if(a.length<4)return;const nx=SRM.pg(sdiff(a));return nx===undefined?undefined:a[a.length-1]+nx},
+  d3:a=>{if(a.length<6)return;const d=sdiff(a),e=sdiff(d),f=sdiff(e);if(!f.every(x=>x===f[0]))return;return a[a.length-1]+d[d.length-1]+e[e.length-1]+f[0]},
+  alt:a=>{if(a.length<5)return;const d=sdiff(a);for(let i=2;i<d.length;i++)if(d[i]!==d[i-2])return;return a[a.length-1]+d[d.length-2]},
+  fib:a=>{if(a.length<5)return;for(let i=2;i<a.length;i++)if(a[i]!==a[i-1]+a[i-2])return;return a[a.length-1]+a[a.length-2]},
+};
+const SRX={ // hipóteses sobre a sequência inteira: devolvem a lista de previsões compatíveis
+  rec2:a=>{const o=[],n=a.length;                     // x(i) = p·x(i−1) + q·x(i−2) + c
+    for(let p=-3;p<=5;p++)for(let q=-3;q<=3;q++){if(!p&&!q)continue;const s=q?2:1;if(n<(q?6:4))continue;
+      const c=a[s]-p*a[s-1]-(q?q*a[s-2]:0);if(Math.abs(c)>20)continue;let ok=true;
+      for(let i=s+1;i<n&&ok;i++)if(a[i]!==p*a[i-1]+(q?q*a[i-2]:0)+c)ok=false;
+      if(ok)o.push(p*a[n-1]+(q?q*a[n-2]:0)+c)}return o},
+  tri:a=>{const n=a.length;if(n<7)return[];const c=a[3]-a[2]-a[1]-a[0];if(Math.abs(c)>9)return[];for(let i=4;i<n;i++)if(a[i]!==a[i-1]+a[i-2]+a[i-3]+c)return[];return[a[n-1]+a[n-2]+a[n-3]+c]},
+  nfat:a=>{const o=[],n=a.length;if(n<5)return o;         // x(i) = (i+k)·x(i−1) + c
+    for(let k=0;k<=4;k++){const c=a[1]-(1+k)*a[0];if(Math.abs(c)>9)continue;let ok=true;for(let i=2;i<n&&ok;i++)if(a[i]!==(i+k)*a[i-1]+c)ok=false;if(ok)o.push((n+k)*a[n-1]+c)}return o},
+  altop:a=>{const o=[],n=a.length;if(n<6)return o;        // duas operações alternadas, cada uma +k ou ×m
+    const ops=(x,y)=>{const r=[];if(y!==x)r.push(['+',y-x]);if(x&&Number.isInteger(y/x)&&Math.abs(y/x)>=2&&Math.abs(y/x)<=5)r.push(['*',y/x]);return r},ap=(op,x)=>op[0]==='+'?x+op[1]:x*op[1];
+    for(const o1 of ops(a[0],a[1]))for(const o2 of ops(a[1],a[2])){if(o1[0]==='+'&&o2[0]==='+')continue;let ok=true;
+      for(let i=3;i<n&&ok;i++)if(a[i]!==ap(i%2?o1:o2,a[i-1]))ok=false;if(ok)o.push(ap(n%2?o1:o2,a[n-1]))}return o},
+  dfib:a=>{const n=a.length;if(n<6)return[];const d=sdiff(a);for(let i=2;i<d.length;i++)if(d[i]!==d[i-1]+d[i-2])return[];return[a[n-1]+d[d.length-1]+d[d.length-2]]},
+  sqalt:a=>{const o=[],n=a.length;if(n<6)return o;        // parábola com desvio alternado ±k
+    for(let k=1;k<=9;k++)for(const s of[1,-1]){const b=a.map((x,i)=>x-s*(i%2?-k:k)),nx=SRM.d2(b);if(nx!==undefined)o.push(nx+s*(n%2?-k:k))}return o},
+};
+function srPredict(a,mode){
+  const P=new Set(),add=v=>{if(v!==undefined&&Number.isFinite(v)&&(mode==='num'||(v>=0&&v<=25)))P.add(v)};
+  const models=mode==='let'?['konst','pa','d2','alt']:['konst','pa','pg','d2','dg','d3','alt','fib'];
+  const fit=s=>{const o=[];for(const m of models){const v=SRM[m](s);if(v!==undefined)o.push(v)}return o};
+  fit(a).forEach(add);
+  if(mode==='num')for(const k in SRX)SRX[k](a).forEach(add);
+  for(const p of[2,3]){const st=Array.from({length:p},(_,k)=>a.filter((_,i)=>i%p===k)),fs=st.map(fit);if(fs.every(f=>f.length))fs[a.length%p].forEach(add)}
+  return P;
+}
+function srNum(level,R){
+  const ri=R.range,gen=(n,f)=>{const s=[];for(let i=0;i<n;i++)s.push(f(i,s));return s},mix=(A,B)=>{const s=[];for(let i=0;i<A.length;i++){s.push(A[i]);if(i<B.length)s.push(B[i])}return s};
+  const o2=(x,d,e,n)=>{const s=[x];for(let i=1;i<n;i++){x+=d;d+=e;s.push(x)}return s};
+  const v=R.int(4);
+  switch(level){
+  case 1:{const a=ri(1,20),d=ri(2,9);return{tpl:'pa',t:gen(6,i=>a+d*i)}}
+  case 2:{if(v<2){const d=ri(3,12),a=ri(4,20)+5*d;return{tpl:'pa-',t:gen(6,i=>a-d*i)}}const k=R.pick([2,3]),a=ri(1,6);return{tpl:'pg',t:gen(6,i=>a*k**i)}}
+  case 3:{if(v<2)return{tpl:'d2',t:o2(ri(1,15),ri(1,6),ri(1,4),7)};const a=ri(1,7);let b=ri(1,9);if(b===a)b++;return{tpl:'alt',t:gen(8,(i,s)=>i?s[i-1]+(i%2?a:b):ri(1,20))}}
+  case 4:{if(v<2){const da=ri(1,6);let db=R.chance(.5)?-ri(1,5):ri(2,9);if(db===da)db++;const a0=ri(1,20),b0=ri(30,60);return{tpl:'int',t:mix(gen(5,i=>a0+da*i),gen(4,i=>b0+db*i))}}
+    const m=R.pick([2,3]),k=ri(1,5);return{tpl:'altop',t:gen(8,(i,s)=>i?(i%2?s[i-1]*m:s[i-1]+k):ri(1,4))}}
+  case 5:{if(v===0){const r=R.pick([2,3]);let d=ri(1,3);return{tpl:'dg',t:gen(7,(i,s)=>{if(!i)return ri(1,9);const x=s[i-1]+d;d*=r;return x})}}
+    if(v===1){const a=ri(1,6),b=ri(1,9);return{tpl:'fib',t:gen(7,(i,s)=>i===0?a:i===1?b:s[i-1]+s[i-2])}}
+    const m=R.pick([2,3]),k=ri(1,4);return{tpl:'altop-',t:gen(8,(i,s)=>i?(i%2?s[i-1]*m:s[i-1]-k):ri(4,7))}}
+  case 6:{if(v===0){const db=R.chance(.5)?-ri(2,6):ri(2,7),b0=ri(30,60);return{tpl:'int-d2',t:mix(o2(ri(1,9),ri(1,4),ri(1,3),6),gen(5,i=>b0+db*i))}}
+    if(v===1){const p=R.pick([2,3]),c=R.pick([-3,-2,-1,1,2,3]);return{tpl:'lin',t:gen(7,(i,s)=>i?p*s[i-1]+c:ri(2,5))}}
+    const c=R.pick([-3,-2,-1,1,2,3]),a=ri(2,6),b=ri(3,9);return{tpl:'fib+c',t:gen(8,(i,s)=>i===0?a:i===1?b:s[i-1]+s[i-2]+c)}}
+  case 7:{if(v===0){let x=ri(1,9),d=ri(1,5),e=ri(1,4);const f=ri(1,3);return{tpl:'d3',t:gen(8,i=>{if(!i)return x;x+=d;d+=e;e+=f;return x})}}
+    if(v===1){const k=ri(0,1),c=R.pick([0,0,1,-1,2]);return{tpl:'nfat',t:gen(6,(i,s)=>i?(i+k)*s[i-1]+c:ri(1,3))}}
+    if(v===2){const a=ri(1,4),b=ri(1,5),c=ri(1,6);return{tpl:'tri',t:gen(8,(i,s)=>i<3?[a,b,c][i]:s[i-1]+s[i-2]+s[i-3])}}
+    const s0=ri(1,4),k=ri(1,5),sg=R.pick([1,-1]);return{tpl:'sqalt',t:gen(8,i=>(i+s0)**2+sg*(i%2?-k:k))}}
+  default:{if(v===0){const p=R.pick([2,3]),q=R.pick([1,-1]),a=ri(1,3),b=ri(a+1,a+4);if(p===2&&q===-1)return null;return{tpl:'rec2',t:gen(8,(i,s)=>i===0?a:i===1?b:p*s[i-1]+q*s[i-2])}}
+    if(v===1){const a=ri(1,4),b=ri(1,5),x0=ri(1,9);const d=gen(8,(i,s)=>i===0?a:i===1?b:s[i-1]+s[i-2]);return{tpl:'dfib',t:gen(9,(i,s)=>i?s[i-1]+d[i-1]:x0)}}
+    if(v===2){const r=R.pick([2,3]),g0=ri(1,3),a=ri(1,5),b=ri(2,7);return{tpl:'int-fib-pg',t:mix(gen(7,(i,s)=>i===0?a:i===1?b:s[i-1]+s[i-2]),gen(6,i=>g0*r**i))}}
+    const c=R.pick([-1,1,2,3]),k=ri(1,2);return{tpl:'nfat+c',t:gen(6,(i,s)=>i?(i+k)*s[i-1]+c:ri(1,3))}}
+  }
+}
+function srLet(level,R){
+  const ri=R.range,gen=(n,f)=>{const s=[];for(let i=0;i<n;i++)s.push(f(i,s));return s},per=(n,streams)=>gen(n,i=>streams[i%streams.length](Math.floor(i/streams.length)));
+  const pa=(a,d)=>j=>a+d*j,o2=(a,g)=>j=>a+g*j+j*(j-1)/2,k=c=>()=>c,v=R.int(2),sg=()=>R.pick([1,-1]);
+  switch(level){
+  case 1:{const d=ri(1,2);return{tpl:'pa',t:gen(6,pa(ri(0,25-5*d),d))}}
+  case 2:{if(v){const d=ri(1,3);return{tpl:'pa-',t:gen(6,pa(ri(5*d,25),-d))}}const s=ri(0,21);return{tpl:'pares',t:gen(8,i=>s+Math.floor(i/2))}}
+  case 3:{const d=ri(1,2);return{tpl:'int-k',t:per(9,[pa(ri(0,12),d),k(ri(15,25))])}}
+  case 4:{return{tpl:'int±',t:per(9,[pa(ri(0,8),ri(1,2)),pa(ri(18,25),-ri(1,2))])}}
+  case 5:{const s=ri(0,12);return{tpl:'p3-pares',t:per(11,[pa(s,2),pa(s+1,2),k(ri(20,25))])}}
+  case 6:{const ds=R.shuffle([1,2,-1,-2,3]).slice(0,3);return{tpl:'p3',t:per(11,ds.map(d=>pa(d>0?ri(0,6):ri(19,25),d)))}}
+  case 7:{if(v){const up=R.chance(.5),s=ri(0,3);return{tpl:'d2',t:gen(7,j=>up?o2(s,1)(j):25-o2(s,1)(j))}}return{tpl:'int-d2',t:per(9,[o2(ri(0,3),ri(1,2)),k(ri(18,25))])}}
+  default:{if(v)return{tpl:'int-d2-pa',t:per(9,[o2(ri(0,3),ri(1,2)),pa(ri(20,25),-ri(1,2))])};return{tpl:'p3-d2',t:per(13,[o2(ri(0,2),ri(1,2)),pa(ri(19,25),-1),pa(ri(3,9),2)])}}
+  }
+}
+function genSeries(level,R,mode){
+  for(;;){
+    const c=mode==='let'?srLet(level,R):srNum(level,R);if(!c)continue;
+    const t=c.t,ans=t[t.length-1],shown=t.slice(0,-1);
+    if(t.some(x=>!Number.isInteger(x)||x<0||x>(mode==='let'?25:99999)))continue;
+    if(new Set(shown).size<Math.min(3,shown.length))continue;
+    const P=srPredict(shown,mode);if(P.size!==1||!P.has(ans))continue;
+    const f=x=>mode==='let'?String.fromCharCode(65+x):String(x);
+    return{level,mode,tpl:c.tpl,shown,answer:ans,shownStr:shown.map(f).join(' '),answerStr:f(ans)};
+  }
+}
+const LT_CODES='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(c=>'l'+c).concat(['BS','OK']);
+function setLetterPad(){
+  const list='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(c=>({code:'l'+c,label:c,keys:[c,c.toLowerCase()]}));
+  list.push({code:'BS',label:'⌫',keys:['Backspace']});list.push({code:'OK',label:'OK',keys:['Enter']});setButtons(list);$('#resp').className='resp kl';
+}
+async function srItem(it){
+  if(it.mode==='num')setKeypad();else setLetterPad();
+  const limit=tmI(SR.limit),codes=it.mode==='num'?KP_CODES:LT_CODES;let entry='';
+  cur({module:'series',type:'entry',mode:it.mode,level:it.level,answer:it.answerStr});
+  const onset=await paint(()=>{$('#pstage').innerHTML=`<div class="srq">${it.shownStr.split(' ').join('&ensp;')}&ensp;<span class="q">?</span></div><div class="sra" id="sra">&nbsp;</div>`});
+  const stop=startBar(limit,onset);
+  for(;;){
+    const r=await awaitResponse(codes,limit,onset);
+    if(r.timeout){stop();return{answer:entry,rt:limit,timeout:true}}
+    if(r.resp==='OK'){if(entry.length){stop();return{answer:entry,rt:r.rt,timeout:false}}}
+    else if(r.resp==='BS')entry=entry.slice(0,-1);
+    else if(it.mode==='num'){if(entry.length<6)entry+=r.resp.slice(1)}else entry=r.resp.slice(1);
+    $('#sra').textContent=entry||' ';
+  }
+}
+const srOk=(ans,it)=>it.mode==='num'?ans!==''&&parseInt(ans,10)===it.answer:ans===it.answerStr;
+async function runSeries(){
+  const n=FAST()?6:SR.N;
+  await instruct('Séries',`<p>Cada item mostra uma sequência de números ou de letras que segue uma regra. Digite o <b>próximo termo</b> e confirme com OK.</p><p>Nas letras vale o alfabeto de 26 letras (com K, W e Y), sem dar a volta de Z para A.</p><p class="small">${n} itens, até 60 s cada; números e letras se alternam e a dificuldade se ajusta aos seus acertos. Quando o tempo acaba, vale o que estiver digitado.</p>`,'Começar prática');
+  buildPanel('Séries · prática');
+  for(let k=0;k<2;k++){const it=genSeries(1+k,itemRng(SESSION.seed,'series-pratica',k,1+k),k?'let':'num');prog(k,2);
+    const r=await srItem(it),ok=srOk(r.answer,it);await pfeedback(ok,ok?'Correto':'Resposta: '+it.answerStr,ok?900:2200)}
+  await instruct('Séries — teste',`<p>Agora sem correção.</p>`,'Começar');
+  buildPanel('Séries');const st=makeStair();
+  for(let i=0;i<n;i++){
+    const lv=st.level,mode=i%2?'let':'num',it=genSeries(lv,itemRng(SESSION.seed,'series',i,lv),mode);prog(i,n);
+    const r=await srItem(it),ok=srOk(r.answer,it);st.update(ok);
+    rec({module:'series',phase:'test',idx:i,level:lv,cond:mode,block:it.tpl,stim:it.shownStr,corr:it.answerStr,resp:r.answer,rt:Math.round(r.rt),correct:ok,timeout:r.timeout});
+    $('#pstage').innerHTML='';await sleep(tm(350));
+  }
+}
+
+/* ───────────────────────── módulo: dobradura de papel ───────────────────────── */
+// Papel 4×4. Cada dobra reflete, numa reta da grade ou numa diagonal, a parte menor sobre a maior.
+// Camada = polígono convexo no papel dobrado + afim M que leva o papel aberto ao dobrado.
+// O furo atravessa todas as camadas naquele ponto; aberto o papel, cada camada devolve um furo.
+const FD={N:20,limit:45000,spec:{1:{f:1,half:1,need:2},2:{f:1,half:-1,need:2},3:{f:2,diag:0,need:3},4:{f:2,diag:1,need:2},5:{f:3,diag:0,need:4},6:{f:3,diag:1,need:3},7:{f:3,diag:1,need:3,p:2},8:{f:4,diag:1,need:4,p:2}}};
+const F_LINES=(()=>{const L=[],q=Math.SQRT1_2;for(const k of[1,2,3]){L.push({nx:1,ny:0,k,diag:false,id:'x'+k});L.push({nx:0,ny:1,k,diag:false,id:'y'+k})}
+  for(const k of[2,4,6])L.push({nx:q,ny:q,k:k*q,diag:true,id:'s'+k});for(const k of[-2,0,2])L.push({nx:q,ny:-q,k:k*q,diag:true,id:'d'+k});return L})();
+function clipPoly(poly,L,sgn){ // mantém o lado em que sgn·(n·p−k) ≤ 0
+  const out=[],s=p=>sgn*(L.nx*p[0]+L.ny*p[1]-L.k);
+  for(let i=0;i<poly.length;i++){const A=poly[i],B=poly[(i+1)%poly.length],sa=s(A),sb=s(B);
+    if(sa<=1e-9)out.push(A);
+    if((sa<-1e-9&&sb>1e-9)||(sa>1e-9&&sb<-1e-9)){const t=sa/(sa-sb);out.push([A[0]+t*(B[0]-A[0]),A[1]+t*(B[1]-A[1])])}}
+  return out;
+}
+const polyArea=p=>{let a=0;for(let i=0;i<p.length;i++){const A=p[i],B=p[(i+1)%p.length];a+=A[0]*B[1]-B[0]*A[1]}return Math.abs(a)/2};
+const reflAff=L=>[1-2*L.nx*L.nx,-2*L.nx*L.ny,2*L.k*L.nx,-2*L.nx*L.ny,1-2*L.ny*L.ny,2*L.k*L.ny];
+const affMul=(A,B)=>[A[0]*B[0]+A[1]*B[3],A[0]*B[1]+A[1]*B[4],A[0]*B[2]+A[1]*B[5]+A[2],A[3]*B[0]+A[4]*B[3],A[3]*B[1]+A[4]*B[4],A[3]*B[2]+A[4]*B[5]+A[5]];
+const affAp=(A,p)=>[A[0]*p[0]+A[1]*p[1]+A[2],A[3]*p[0]+A[4]*p[1]+A[5]];
+function affInv(A){const det=A[0]*A[4]-A[1]*A[3],a=A[4]/det,b=-A[1]/det,d=-A[3]/det,e=A[0]/det;return[a,b,-(a*A[2]+b*A[5]),d,e,-(d*A[2]+e*A[5])]}
+function inPoly(p,poly){let pos=0,neg=0;for(let i=0;i<poly.length;i++){const A=poly[i],B=poly[(i+1)%poly.length],cr=(B[0]-A[0])*(p[1]-A[1])-(B[1]-A[1])*(p[0]-A[0]);if(cr>1e-9)pos++;else if(cr<-1e-9)neg++}return!(pos&&neg)}
+function edgeDist(p,poly){let m=Infinity;for(let i=0;i<poly.length;i++){const A=poly[i],B=poly[(i+1)%poly.length],dx=B[0]-A[0],dy=B[1]-A[1],t=Math.max(0,Math.min(1,((p[0]-A[0])*dx+(p[1]-A[1])*dy)/(dx*dx+dy*dy||1)));m=Math.min(m,Math.hypot(p[0]-A[0]-t*dx,p[1]-A[1]-t*dy))}return m}
+function applyFold(layers,L,side){ // side=+1: dobra o lado n·p>k sobre o outro
+  const keep=[],mov=[],Rf=reflAff(L);
+  for(const ly of layers){const a=clipPoly(ly.poly,L,side),b=clipPoly(ly.poly,L,-side);
+    if(a.length>2&&polyArea(a)>1e-6)keep.push({poly:a,M:ly.M});
+    if(b.length>2&&polyArea(b)>1e-6)mov.push({poly:b.map(p=>affAp(Rf,p)).reverse(),M:affMul(Rf,ly.M)})}
+  return keep.concat(mov.reverse());
+}
+function foldOk(layers,L,side){ // a parte que dobra é a menor (ou igual), não é uma lasca e cai dentro do quadrado
+  let nk=0,nm=0;
+  for(let i=0;i<32;i++)for(let j=0;j<32;j++){const p=[(i+.5)/8,(j+.5)/8];if(!layers.some(ly=>inPoly(p,ly.poly)))continue;if(side*(L.nx*p[0]+L.ny*p[1]-L.k)>0)nm++;else nk++}
+  if(nm<48||nm>nk+2)return false;
+  const Rf=reflAff(L);
+  for(const ly of layers)for(const p of clipPoly(ly.poly,L,-side)){const q=affAp(Rf,p);if(q[0]<-1e-6||q[0]>4+1e-6||q[1]<-1e-6||q[1]>4+1e-6)return false}
+  return true;
+}
+function genFold(level,R){
+  const sp=FD.spec[level];
+  for(;;){
+    let layers=[{poly:[[0,0],[4,0],[4,4],[0,4]],M:[1,0,0,0,1,0]}];const folds=[],states=[];let nd=0,ok=true;
+    for(let f=0;f<sp.f;f++){
+      let cand=[];for(const L of F_LINES)for(const side of[1,-1])if(foldOk(layers,L,side))cand.push({L,side});
+      const half=c=>c.L.id==='x2'||c.L.id==='y2';
+      if(sp.half===1)cand=cand.filter(half);if(sp.half===-1)cand=cand.filter(c=>!half(c));
+      if(sp.diag===0)cand=cand.filter(c=>!c.L.diag);
+      if(sp.diag===1&&f===sp.f-1&&!nd)cand=cand.filter(c=>c.L.diag);            // ao menos uma dobra diagonal
+      if(!cand.length){ok=false;break}
+      const c=R.pick(cand);if(c.L.diag)nd++;layers=applyFold(layers,c.L,c.side);folds.push(c.L.id+(c.side>0?'+':'-'));states.push(layers);
+    }
+    if(!ok)continue;
+    // pontos de furo: centros de casa, longe de qualquer borda de camada
+    const pts=[];for(let cx=0;cx<4;cx++)for(let cy=0;cy<4;cy++){const p=[cx+.5,cy+.5];if(layers.some(ly=>edgeDist(p,ly.poly)<0.3))continue;const n=layers.filter(ly=>inPoly(p,ly.poly)).length;if(n)pts.push({p,n})}
+    const good=pts.filter(x=>x.n>=sp.need);if(!good.length)continue;
+    const top=Math.max(...good.map(x=>x.n)),first=R.chance(.6)?R.pick(good.filter(x=>x.n===top)):R.pick(good),punches=[first];
+    if(sp.p===2){const rest=pts.filter(x=>x!==first);if(!rest.length)continue;punches.push(R.pick(rest))}
+    let mask=0,cnt=0;
+    for(const q of punches)for(const ly of layers)if(inPoly(q.p,ly.poly)){const o=affAp(affInv(ly.M),q.p),cx=Math.floor(o[0]),cy=Math.floor(o[1]);
+      if(cx<0||cx>3||cy<0||cy>3||Math.abs(o[0]-cx-.5)>1e-6||Math.abs(o[1]-cy-.5)>1e-6){mask=-1;break}mask|=1<<(cy*4+cx);cnt++}
+    if(mask<=0||popc(mask)!==cnt||cnt<2||cnt>10)continue;
+    return{level,folds,states,punches:punches.map(x=>x.p),mask,nHoles:cnt};
+  }
+}
+const fGrid=o=>{let s='';for(let i=1;i<4;i++)s+=`<path d="M${i} 0V4M0 ${i}H4" stroke="rgba(42,37,32,${o})" stroke-width="0.025" fill="none"/>`;return s};
+function foldSvg(layers,punches){
+  let s=`<svg viewBox="-0.2 -0.2 4.4 4.4"><rect x="0" y="0" width="4" height="4" fill="none" stroke="#b9ad96" stroke-width="0.045" stroke-dasharray="0.16 0.11"/>`;
+  for(const ly of layers)s+=`<polygon points="${ly.poly.map(p=>p[0].toFixed(3)+','+p[1].toFixed(3)).join(' ')}" fill="#f1e2bd" stroke="${INK}" stroke-width="0.055" stroke-linejoin="round"/>`;
+  s+=fGrid(.14);if(punches)for(const q of punches)s+=`<circle cx="${q[0]}" cy="${q[1]}" r="0.25" fill="${INK}"/>`;
+  return s+`</svg>`;
+}
+function foldPadInner(mask){
+  let s=`<rect x="0" y="0" width="4" height="4" fill="#f1e2bd" stroke="${INK}" stroke-width="0.05"/>`+fGrid(.2);
+  for(let c=0;c<16;c++){const x=c%4,y=c>>2;if(mask>>c&1)s+=`<circle cx="${x+.5}" cy="${y+.5}" r="0.25" fill="${INK}"/>`;s+=`<rect data-c="${c}" x="${x}" y="${y}" width="1" height="1" fill="transparent"/>`}
+  return s;
+}
+function foldItemHtml(it){
+  const steps=it.states.map((ly,i)=>foldSvg(ly,i===it.states.length-1?it.punches:null));
+  return`<div class="fsteps${steps.length>3?' n5':''}">${foldSvg([{poly:[[0,0],[4,0],[4,4],[0,4]]}],null)}${steps.map(s=>`<span class="arr">→</span>${s}`).join('')}</div><div class="tiny" style="text-align:center;margin-top:6px">Papel aberto: toque nas casas que ficam furadas</div><svg viewBox="-0.1 -0.1 4.2 4.2" class="fpad" id="fpad">${foldPadInner(0)}</svg>`+CONFIRM;
+}
+function foldItem(it){
+  let mask=0;cur({module:'fold',type:'cells',level:it.level,answer:it.mask});
+  return runItem({limit:tmI(FD.limit),html:foldItemHtml(it),getAnswer:()=>mask,
+    bind:P=>{P.onclick=e=>{const t=e.target.closest('[data-c],#confirm');if(!t)return;if(t.id==='confirm'){if(mask&&ITEM)ITEM.confirm();return}
+      mask^=1<<+t.dataset.c;$('#fpad').innerHTML=foldPadInner(mask);$('#confirm').disabled=!mask}}});
+}
+const fPart=(m,it)=>{const u=popc(m|it.mask);return u?popc(m&it.mask)/u:0};
+async function runFold(){
+  const n=FAST()?6:FD.N;
+  await instruct('Dobradura de papel',`<p>Um papel quadrado é dobrado uma ou mais vezes. As figuras mostram o papel depois de cada dobra; o quadrado tracejado marca onde ele estava. Na última figura o papel dobrado é furado.</p><p><b>Marque onde ficam os furos com o papel aberto</b>, tocando nas casas da grade, e confirme. A grade fina é a mesma em todas as figuras.</p><p class="small">${n} itens, até 45 s cada; a dificuldade se ajusta aos seus acertos. Quando o tempo acaba, vale o que estiver marcado.</p>`,'Começar prática');
+  buildPanel('Dobradura · prática');
+  for(let k=0;k<2;k++){const lv=1+2*k,it=genFold(lv,itemRng(SESSION.seed,'fold-pratica',k,lv));prog(k,2);
+    const r=await foldItem(it),ok=r.answer===it.mask;if(!ok)$('#fpad').innerHTML=foldPadInner(it.mask);
+    await pfeedback(ok,ok?'Correto':'Os furos certos são os que aparecem agora',ok?900:2600)}
+  await instruct('Dobradura — teste',`<p>Agora sem correção.</p>`,'Começar');
+  buildPanel('Dobradura');const st=makeStair();
+  for(let i=0;i<n;i++){
+    const lv=st.level,it=genFold(lv,itemRng(SESSION.seed,'fold',i,lv));prog(i,n);
+    const r=await foldItem(it),ok=r.answer===it.mask;st.update(ok);
+    rec({module:'fold',phase:'test',idx:i,level:lv,cond:it.folds.join(' '),stim:it.punches.map(p=>p.join(',')).join(' '),corr:it.mask,resp:r.answer,rt:Math.round(r.rt),correct:ok,timeout:r.timeout,part:+fPart(r.answer,it).toFixed(2)});
+    $('#pstage').innerHTML='';await sleep(tm(350));
+  }
+}
+
+/* ───────────────────────── módulo: rotação mental 3D ───────────────────────── */
+// Figuras de 10 cubos em 4 braços (Shepard & Metzler, 1971), geradas por código e sempre quirais.
+// O par mostra a mesma figura girada em torno do eixo vertical, ou a figura espelhada girada.
+const ROT={angles:[40,80,120,160],reps:9,limit:10000};
+const ROT24=(()=>{const out=[];for(const p of[[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]])for(let s=0;s<8;s++){
+  const m=[[0,0,0],[0,0,0],[0,0,0]];for(let i=0;i<3;i++)m[i][p[i]]=s>>i&1?-1:1;
+  const det=m[0][0]*(m[1][1]*m[2][2]-m[1][2]*m[2][1])-m[0][1]*(m[1][0]*m[2][2]-m[1][2]*m[2][0])+m[0][2]*(m[1][0]*m[2][1]-m[1][1]*m[2][0]);if(det===1)out.push(m)}return out})();
+const mv3=(m,v)=>[m[0][0]*v[0]+m[0][1]*v[1]+m[0][2]*v[2],m[1][0]*v[0]+m[1][1]*v[1]+m[1][2]*v[2],m[2][0]*v[0]+m[2][1]*v[1]+m[2][2]*v[2]];
+function figCanon(C){let best=null;for(const m of ROT24){const r=C.map(c=>mv3(m,c)),mn=[0,1,2].map(k=>Math.min(...r.map(c=>c[k]))),s=r.map(c=>c.map((v,k)=>v-mn[k]).join(',')).sort().join(';');if(best===null||s<best)best=s}return best}
+const figMirror=C=>C.map(c=>[-c[0],c[1],c[2]]);
+function genFigure(R){
+  const AX=[[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+  for(;;){
+    const len=[0,0,0,0].map(()=>R.range(2,4));if(len[0]+len[1]+len[2]+len[3]!==13)continue;
+    const d=[[1,0,0]];for(let i=1;i<4;i++)d.push(R.pick(AX.filter(a=>dot(a,d[i-1])===0)));
+    const C=[[0,0,0]];let p=[0,0,0];for(let i=0;i<4;i++)for(let j=1;j<len[i];j++){p=[p[0]+d[i][0],p[1]+d[i][1],p[2]+d[i][2]];C.push(p)}
+    let ok=C.length===10;
+    for(let i=0;i<C.length&&ok;i++)for(let j=i+2;j<C.length;j++)if(Math.abs(C[i][0]-C[j][0])+Math.abs(C[i][1]-C[j][1])+Math.abs(C[i][2]-C[j][2])<=1){ok=false;break}  // sem cruzar nem encostar
+    if(!ok||[0,1,2].some(k=>new Set(C.map(c=>c[k])).size<2))continue;
+    if(figCanon(C)===figCanon(figMirror(C)))continue;
+    return C;
+  }
+}
+function genRotTrial(R,angle,mirror){
+  const base=R.pick(ROT24),A0=genFigure(R).map(c=>mv3(base,c)),cen=[0,1,2].map(k=>A0.reduce((s,c)=>s+c[k],0)/A0.length);
+  const A=A0.map(c=>c.map((v,k)=>v-cen[k])),sg=R.chance(.5)?1:-1;let az;
+  for(;;){az=R.range(14,76);const b=(((az+sg*angle)%90)+90)%90;if(b>=14&&b<=76)break}   // nenhuma das duas vistas olha ao longo de um braço
+  return{angle,mirror,A,B:mirror?figMirror(A):A,azA:az,azB:az+sg*angle};
+}
+function rotSvg(C,azDeg){
+  const el=Math.PI/6,az=azDeg*Math.PI/180,ca=Math.cos(az),sa=Math.sin(az),ce=Math.cos(el),se=Math.sin(el),Lg=[-0.42,0.78,0.46];
+  const S=Math.min(19,68/(Math.max(...C.map(c=>Math.hypot(c[0],c[1],c[2])))+0.87));   // mesma escala nas duas vistas: depende só da figura
+  const T=v=>{const x=ca*v[0]+sa*v[2],z=-sa*v[0]+ca*v[2];return[x,ce*v[1]-se*z,se*v[1]+ce*z]};   // giro vertical, depois inclinação da câmera
+  const faces=[[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]].map(n=>({n,t:T(n)})).filter(f=>f.t[2]>1e-6);
+  const cubes=C.map(c=>({c,d:T(c)[2]})).sort((a,b)=>a.d-b.d);let s='';
+  for(const{c}of cubes)for(const f of faces){
+    const ax=f.n.findIndex(v=>v!==0),u=[0,0,0],w=[0,0,0];u[(ax+1)%3]=.5;w[(ax+2)%3]=.5;
+    const pts=[[1,1],[1,-1],[-1,-1],[-1,1]].map(([a,b])=>{const p=T([c[0]+f.n[0]/2+a*u[0]+b*w[0],c[1]+f.n[1]/2+a*u[1]+b*w[1],c[2]+f.n[2]/2+a*u[2]+b*w[2]]);return(p[0]*S).toFixed(1)+','+(-p[1]*S).toFixed(1)});
+    const sh=Math.max(0,Math.min(1,f.t[0]*Lg[0]+f.t[1]*Lg[1]+f.t[2]*Lg[2])),g=k=>Math.round(k[0]+(k[1]-k[0])*sh);
+    s+=`<polygon points="${pts.join(' ')}" fill="rgb(${g([150,255])},${g([138,250])},${g([116,238])})" stroke="${INK}" stroke-width="1" stroke-linejoin="round"/>`}
+  return`<svg viewBox="-75 -75 150 150">${s}</svg>`;
+}
+function rotList(reps,R){ // ângulos × igual/espelhada × repetições, sem mais de 3 respostas iguais seguidas
+  const base=[];for(const a of ROT.angles)for(const m of[false,true])for(let r=0;r<reps;r++)base.push({angle:a,mirror:m});
+  for(;;){const L=R.shuffle(base);let run=1,ok=true;for(let i=1;i<L.length;i++){run=L[i].mirror===L[i-1].mirror?run+1:1;if(run>3){ok=false;break}}if(ok)return L}
+}
+async function rotBlock(phase,tag,list,fb){
+  let nc=0;const WIN=tmD(ROT.limit);
+  for(let i=0;i<list.length;i++){
+    const{angle,mirror}=list[i],tr=genRotTrial(itemRng(SESSION.seed,'rot-'+tag,i,angle),angle,mirror),corr=mirror?'R':'L';prog(i,list.length);
+    $('#pstage').innerHTML='<div class="rotpair"></div>';{const tb=$('#tbar');if(tb)tb.style.width='100%'}await sleep(tm(450));
+    cur({module:'rot',valid:['L','R'],correct:corr,angle,cond:mirror?'mirror':'same'});
+    const onset=await paint(()=>{$('#pstage').innerHTML=`<div class="rotpair">${rotSvg(tr.A,tr.azA)}${rotSvg(tr.B,tr.azB)}</div>`});
+    const stop=startBar(WIN,onset),r=await awaitResponse(['L','R'],WIN,onset);stop();
+    const ok=r.resp===corr;if(ok)nc++;
+    rec({module:'rot',phase,idx:i,angle,cond:mirror?'mirror':'same',stim:'az '+tr.azA+'→'+tr.azB,corr,resp:r.resp,rt:r.rt==null?null:Math.round(r.rt),correct:ok,timeout:r.timeout});
+    if(fb)await pfeedback(ok,r.timeout?'Muito lento':ok?'Correto':mirror?'Errado: era a espelhada':'Errado: era a mesma figura',ok?600:1500);
+  }
+  return nc/list.length;
+}
+async function runRot(){
+  const reps=FAST()?1:ROT.reps;
+  await instruct('Rotação mental',`<p>Aparecem duas figuras feitas de cubos. Às vezes a da direita é a <b>mesma</b> figura vista de outro ângulo. Outras vezes é a figura <b>espelhada</b>, que nenhum giro transforma na da esquerda.</p><p>Responda IGUAL ou ESPELHADA o mais rápido que conseguir sem errar.</p><p class="small">${ROT.angles.length*2*reps} pares, até 10 s cada. ${TOUCH?'Botão esquerdo: igual. Botão direito: espelhada.':'Teclas: F = igual, J = espelhada.'}</p>`,'Começar prática');
+  const btns=LR_BTNS('IGUAL','ESPELHADA','mesma figura','figura invertida');let ok=false,tries=0;
+  while(!ok){buildPanel('Rotação 3D · prática');setButtons(btns);const acc=await rotBlock('practice','p'+tries,rotList(1,itemRng(SESSION.seed,'rot-ordem-p',tries++,0)).slice(0,FAST()?4:6),true);await sleep(tm(250));ok=await gate(acc)}
+  buildPanel('Rotação 3D');setButtons(btns);
+  await rotBlock('test','t',rotList(reps,itemRng(SESSION.seed,'rot-ordem',0,0)),false);
+}
+
+/* ───────────────────────── métricas da Fase 1 ───────────────────────── */
+function powerMetrics(T){
+  const hist=T.map(t=>({level:t.level,ok:t.correct})),f=fitTheta(hist),byLevel={};
+  T.forEach(t=>{const b=byLevel[t.level]=byLevel[t.level]||[0,0];b[1]++;if(t.correct)b[0]++});
+  const okT=T.filter(t=>t.correct),parts=T.map(t=>t.part).filter(x=>x!=null);
+  return{n:T.length,nCorrect:okT.length,theta:f.theta,lo:f.lo,hi:f.hi,ceiling:f.ceiling,floor:f.floor,maxOk:okT.length?Math.max(...okT.map(t=>t.level)):0,byLevel,
+    medRT:median(okT.map(t=>t.rt)),timeouts:T.filter(t=>t.timeout).length,partial:parts.length?mean(parts):null,
+    thOdd:fitTheta(hist.filter((_,i)=>i%2===1)).theta,thEven:fitTheta(hist.filter((_,i)=>i%2===0)).theta};
+}
+function rotMetrics(T){
+  const acc=a=>a.length?a.filter(t=>t.correct).length/a.length:NaN,angles=[...new Set(T.map(t=>t.angle))].sort((a,b)=>a-b);
+  const same=T.filter(t=>t.cond==='same'),mir=T.filter(t=>t.cond==='mirror');
+  const slopeOf=S=>{const pts=angles.map(a=>[a,median(S.filter(t=>t.angle===a&&t.correct&&valid(t)).map(t=>t.rt))]).filter(p=>Number.isFinite(p[1]));
+    if(pts.length<3)return{slope:NaN,icpt:NaN,med:angles.map(()=>NaN)};const mx=mean(pts.map(p=>p[0])),my=mean(pts.map(p=>p[1]));let sxy=0,sxx=0;for(const p of pts){sxy+=(p[0]-mx)*(p[1]-my);sxx+=(p[0]-mx)**2}
+    return{slope:sxy/sxx,icpt:my-sxy/sxx*mx,med:angles.map(a=>median(S.filter(t=>t.angle===a&&t.correct&&valid(t)).map(t=>t.rt)))}};
+  const sl=slopeOf(same),half=k=>T.filter((_,i)=>i%2===k);
+  return{n:T.length,acc:acc(T),accSame:acc(same),accMirror:acc(mir),angles,accByAngle:angles.map(a=>acc(T.filter(t=>t.angle===a))),medByAngle:sl.med,
+    slope:sl.slope,icpt:sl.icpt,degPerSec:sl.slope>0?1000/sl.slope:NaN,medRT:median(T.filter(t=>t.correct&&valid(t)).map(t=>t.rt)),timeouts:T.filter(t=>t.timeout).length,
+    ceiling:T.length>0&&T.every(t=>t.correct),accOdd:acc(half(1)),accEven:acc(half(0)),slopeOdd:slopeOf(same.filter((_,i)=>i%2===1)).slope,slopeEven:slopeOf(same.filter((_,i)=>i%2===0)).slope};
+}
+
 /* ───────────────────────── orquestração ───────────────────────── */
-const RUNNERS={flanker:runFlanker,stroop:runStroop,gng:runGng,nback:runNback,nback3:runNback3,span:runSpan,switch:runSwitch};
+const RUNNERS={flanker:runFlanker,stroop:runStroop,gng:runGng,nback:runNback,nback3:runNback3,span:runSpan,switch:runSwitch,matrix:runMatrix,series:runSeries,fold:runFold,rot:runRot};
 async function startBattery(){
   const sel=[...document.querySelectorAll('.mod input:checked')].map(i=>i.dataset.m);
   if(!sel.length){alertBox('Selecione ao menos um módulo.');return}
-  SESSION={id:($('#pid').value||'').trim(),device:TOUCH?'toque':'teclado',ua:navigator.userAgent.slice(0,120),screen:screen.width+'x'+screen.height,date:new Date().toISOString(),t0:performance.now(),modules:sel,trials:[]};
+  SESSION={id:($('#pid').value||'').trim(),device:TOUCH?'toque':'teclado',ua:navigator.userAgent.slice(0,120),screen:screen.width+'x'+screen.height,date:new Date().toISOString(),t0:performance.now(),modules:sel,trials:[],seed:sessionSeed()};
   for(let i=0;i<sel.length;i++){
     const m=MODULES.find(x=>x.id===sel[i]);
     await RUNNERS[m.id]();
@@ -647,7 +1213,7 @@ function switchMetrics(T){
 }
 function computeSummary(S){
   const T=m=>S.trials.filter(t=>t.module===m&&t.phase==='test');
-  const out={id:S.id,date:S.date,device:S.device,screen:S.screen,durationMin:+S.durationMin.toFixed(1),modules:S.modules,version:'1.1'};
+  const out={id:S.id,date:S.date,device:S.device,screen:S.screen,durationMin:+S.durationMin.toFixed(1),modules:S.modules,version:'1.2'};
   if(S.modules.includes('flanker')){out.flanker=conflictMetrics(T('flanker'));out.flanker.nih=nihFlanker(out.flanker)}
   if(S.modules.includes('stroop'))out.stroop=conflictMetrics(T('stroop'));
   if(S.modules.includes('gng'))out.gng=gngMetrics(T('gng'));
@@ -657,6 +1223,10 @@ function computeSummary(S){
     if(out.nback){const b=out.nback,c2=b.hits===b.nTarget&&b.faN+b.faL===0;out.nback3.loadCost=(c2||out.nback3.ceiling)?null:b.dprime-out.nback3.dprime}}
   if(S.modules.includes('span'))out.span=spanMetrics(T('span'));
   if(S.modules.includes('switch'))out.switch=switchMetrics(T('switch'));
+  if(S.seed!=null)out.seed=S.seed;
+  for(const m of['matrix','series','fold'])if(S.modules.includes(m))out[m]=powerMetrics(T(m));
+  if(out.series)for(const md of['num','let']){const a=T('series').filter(t=>t.cond===md);out.series[md+'Acc']=a.length?a.filter(t=>t.correct).length/a.length:null}
+  if(S.modules.includes('rot'))out.rot=rotMetrics(T('rot'));
   return out;
 }
 
@@ -672,6 +1242,11 @@ const INDICATORS=[
  {key:'span.ldsb',label:'Span inverso · LDSB',domain:'Memória de trabalho',hb:true,unit:'',dec:0},
  {key:'switch.switchCost',label:'Custo de troca (RT)',domain:'Alternância',hb:false,unit:'ms',halves:['switch.swOdd','switch.swEven']},
  {key:'switch.mixCost',label:'Custo de mistura (RT)',domain:'Alternância',hb:false,unit:'ms'},
+ {key:'matrix.theta',label:'Matrizes · nível',domain:'Raciocínio fluido',hb:true,unit:'',dec:1,halves:['matrix.thOdd','matrix.thEven']},
+ {key:'series.theta',label:'Séries · nível',domain:'Raciocínio fluido',hb:true,unit:'',dec:1,halves:['series.thOdd','series.thEven']},
+ {key:'fold.theta',label:'Dobradura · nível',domain:'Visuoespacial',hb:true,unit:'',dec:1,halves:['fold.thOdd','fold.thEven']},
+ {key:'rot.acc',label:'Rotação 3D · acurácia',domain:'Visuoespacial',hb:true,unit:'%',halves:['rot.accOdd','rot.accEven']},
+ {key:'rot.slope',label:'Rotação 3D · ms por grau',domain:'Visuoespacial',hb:false,unit:'',dec:1,composite:false,halves:['rot.slopeOdd','rot.slopeEven']},
 ];
 const getp=(o,k)=>k.split('.').reduce((a,b)=>a==null?undefined:a[b],o);
 const isNum=v=>typeof v==='number'&&Number.isFinite(v);
@@ -690,7 +1265,7 @@ function localNorms(summary){
     }
     rows.push(row);
   });
-  const dom=Object.entries(domZ).map(([d,zs])=>({d,z:mean(zs)}));const ef=dom.length?mean(dom.map(x=>x.z)):NaN;
+  const dom=Object.entries(domZ).map(([d,zs])=>({d,z:mean(zs)}));const efd=dom.filter(x=>EF_DOMAINS.includes(x.d)),ef=efd.length?mean(efd.map(x=>x.z)):NaN;
   return{n,rows,dom,ef};
 }
 
@@ -758,28 +1333,52 @@ function renderResults(S,sm){
     mrow('Acurácia · puro / repetição / troca',`${pct(m.accPure)} / ${pct(m.accRep)} / ${pct(m.accSw)}`)+
     mrow('Timeouts',String(m.timeouts))+
     refbox('Faixa típica com pista simultânea (CSI 0) e p(troca)=.5: custo de troca ≈ 100–300 ms; custo de mistura ≈ 100–400 ms. O custo de mistura carrega mais no fator comum que o custo de troca.'))}
+  const lvRow=m=>`<span style="white-space:normal;font-weight:400">${Object.keys(m.byLevel).sort((a,b)=>a-b).map(l=>`${l}: ${m.byLevel[l][0]}/${m.byLevel[l][1]}`).join(' · ')}</span>`;
+  const power=(title,domain,m,extra,ref)=>card(title,domain,
+    mrow('Nível estimado',`<b>${fmt(m.theta,1)}</b>${m.ceiling?TETO:m.floor?' <span class="pill warn">piso</span>':''} <small>IC95 ${fmt(m.lo,1)}–${fmt(m.hi,1)}</small>`,'itens de nível 1 a 8')+
+    mrow('Itens corretos',`${m.nCorrect} / ${m.n}`)+
+    mrow('Maior nível resolvido',String(m.maxOk))+
+    mrow('Acertos por nível',lvRow(m))+
+    mrow('Tempo mediano nos acertos',`${fmt(m.medRT/1000,1)} s`)+
+    mrow('Itens encerrados pelo tempo',String(m.timeouts))+extra+
+    refbox(ref+' Escala interna, sem norma: o nível estimado é a dificuldade em que você acertaria metade dos itens, e a ordem dos níveis vem do desenho dos itens, não de calibração com dados.'+(m.ceiling?' <b>Sessão no teto</b>: o intervalo encosta no limite da escala e não discrimina acima dele.':'')));
+  if(sm.matrix)h+=power('Matrizes','Raciocínio fluido · indução',sm.matrix,mrow('Crédito parcial médio',pct(sm.matrix.partial),'características certas por item'),
+    'Níveis 1–6: uma a cinco regras sobre forma, cor, tamanho, moldura e ponto. Níveis 7–8: operações lógicas. Resposta construída: sem alternativas, sem acerto por chute.');
+  if(sm.series)h+=power('Séries','Raciocínio fluido · sequências',sm.series,mrow('Acertos · números / letras',`${pct(sm.series.numAcc)} / ${pct(sm.series.letAcc)}`),
+    'Números e letras alternados. As séries numéricas também dependem de fluência com contas; as de letras, quase nada.');
+  if(sm.fold)h+=power('Dobradura de papel','Visuoespacial · visualização',sm.fold,mrow('Sobreposição média com o padrão certo',pct(sm.fold.partial)),
+    'Níveis 1–8: uma a quatro dobras, com diagonais a partir do nível 2 e dois furos nos níveis 7–8.');
+  if(sm.rot){const m=sm.rot,lowAcc=!(m.acc>=.75);h+=card('Rotação mental 3D','Visuoespacial · rotação',
+    mrow('Acurácia',`<b>${pct(m.acc)}</b>${m.ceiling?TETO:''}`)+
+    mrow('Acurácia · iguais / espelhadas',`${pct(m.accSame)} / ${pct(m.accMirror)}`)+
+    mrow('Acurácia por ângulo ('+m.angles.join('° · ')+'°)',m.accByAngle.map(x=>pct(x)).join(' · '))+
+    mrow('RT mediano por ângulo',`<span style="white-space:normal">${m.medByAngle.map(x=>fmt(x/1000,2)).join(' · ')} s</span>`,'pares iguais corretos')+
+    mrow('Inclinação',`<b>${fmt(m.slope,1)} ms/°</b> <small>${fmt(m.degPerSec)}°/s</small>`,lowAcc?'não interpretável: acurácia abaixo de 75%':'')+
+    mrow('Intercepto',`${fmt(m.icpt)} ms`)+
+    mrow('Timeouts',String(m.timeouts))+
+    refbox('O tempo cresce com o ângulo quando a figura é girada mentalmente (Shepard &amp; Metzler, 1971); a inclinação é o custo por grau e o intercepto reúne percepção, decisão e resposta. Sem norma para esta implementação.'+(m.ceiling?' <b>Acurácia no teto</b>: a discriminação fica toda na inclinação.':'')))}
   // normas locais
   const L=localNorms(sm);
   let nb=`<p class="small">Sessões salvas neste navegador: <b>n = ${L.n}</b>. ${L.n<10?'Percentis, z e split‑half aparecem a partir de n = 10. Até lá, use o IC individual e o crosswalk da aba Protocolo.':'Percentis empíricos contra a amostra local (inclui esta sessão). Sinal do z orientado para "melhor = maior".'}</p>`;
   nb+=`<table class="norms"><tr><th>Indicador</th><th class="num">Valor</th><th class="num">Pct.</th><th class="num">z</th><th class="num">Split‑half</th></tr>`+
     L.rows.map(r=>`<tr><td>${r.ind.label}</td><td class="num">${r.ind.unit==='%'?pct(r.v,1):fmt(r.v,r.ind.dec!=null?r.ind.dec:(r.ind.unit===''?2:0))}${r.ind.unit==='ms'?' ms':''}</td><td class="num">${r.pct!=null?fmt(r.pct):'—'}</td><td class="num">${r.z!=null?fmt(r.z,2):'—'}</td><td class="num">${r.sb!=null?fmt(r.sb,2):(r.sh!=null?'r ≤ 0':'—')}</td></tr>`).join('')+`</table>`;
-  if(L.dom.length){nb+=`<h4>Compostos (z local)</h4>`+L.dom.map(d=>mrow(d.d,fmt(d.z,2))).join('')+mrow('<b>EF comum</b>',`<b>${fmt(L.ef,2)}</b>`)}
+  if(L.dom.length){nb+=`<h4>Compostos (z local)</h4>`+L.dom.map(d=>mrow(d.d,fmt(d.z,2))).join('')+(Number.isFinite(L.ef)?mrow('<b>EF comum</b>',`<b>${fmt(L.ef,2)}</b>`):'')}
   h+=card('Normas locais e confiabilidade','Comparação',nb+`<p class="tiny" style="margin-top:8px">Limpar a amostra local apaga apenas os resumos salvos neste navegador. <button class="btn ghost" style="min-width:0;padding:6px 10px;margin:0 0 0 6px;font-size:10px" onclick="if(confirmClear){clearLocal()}else{confirmClear=true;this.textContent='Confirmar limpeza'}">Limpar amostra local</button></p>`);
   // exportação
   const json=JSON.stringify({session:{id:S.id,date:S.date,device:S.device,ua:S.ua,screen:S.screen,durationMin:S.durationMin,modules:S.modules},summary:sm,trials:S.trials},null,0);
-  const cols=['module','phase','block','idx','cond','task','trans','congr','len','stim','corr','resp','rt','correct','timeout','t'];
+  const cols=['module','phase','block','idx','cond','task','trans','congr','len','level','angle','part','stim','corr','resp','rt','correct','timeout','t'];
   const csv=cols.join(',')+'\n'+S.trials.map(t=>cols.map(c=>{const v=t[c];return v==null?'':(typeof v==='string'&&/[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':String(v))}).join(',')).join('\n');
   h+=card('Exportar dados','Sessão',`<p class="small">O JSON contém resumo + ensaios; o CSV traz um ensaio por linha para análise externa (ICC, correlações com baterias amplas). Nada é enviado a servidor: a sessão completa existe só nesta aba até você baixar ou copiar; o navegador guarda apenas o resumo, para as normas locais.</p>
   <div class="row"><button class="btn ghost" onclick="dl('json')">Baixar JSON</button><button class="btn ghost" onclick="dl('csv')">Baixar CSV</button><button class="btn ghost" onclick="copyText('exp-json',this)">Copiar JSON</button><button class="btn ghost" onclick="copyText('exp-csv',this)">Copiar CSV</button><button class="btn ghost" onclick="toggleExp()">Mostrar / ocultar</button></div>
   <div id="expwrap" style="display:none"><textarea id="exp-json" readonly>${esc(json)}</textarea><textarea id="exp-csv" readonly>${esc(csv)}</textarea></div>`);
   const d=new Date(sm.date),p2=x=>String(x).padStart(2,'0');
-  EXPORT={json,csv,base:'bateria-fe_'+(sm.id?sm.id.replace(/[^\w-]+/g,'_')+'_':'')+d.getFullYear()+p2(d.getMonth()+1)+p2(d.getDate())+'-'+p2(d.getHours())+p2(d.getMinutes())};
+  EXPORT={json,csv,base:'bateria_'+(sm.id?sm.id.replace(/[^\w-]+/g,'_')+'_':'')+d.getFullYear()+p2(d.getMonth()+1)+p2(d.getDate())+'-'+p2(d.getHours())+p2(d.getMinutes())};
   $('#view-results').innerHTML=h;
 }
 let EXPORT=null;
 function dl(kind){
   if(!EXPORT)return;
-  try{const blob=new Blob(kind==='json'?[EXPORT.json]:['﻿',EXPORT.csv],{type:kind==='json'?'application/json':'text/csv;charset=utf-8'});
+  try{const blob=new Blob(kind==='json'?[EXPORT.json]:['\ufeff',EXPORT.csv],{type:kind==='json'?'application/json':'text/csv;charset=utf-8'});
     const a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download=EXPORT.base+'.'+kind;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000)}
   catch(e){$('#expwrap').style.display='block'}
 }
@@ -789,6 +1388,7 @@ function toggleExp(){const w=$('#expwrap');w.style.display=w.style.display==='no
 async function copyText(id,btn){const ta=$('#'+id);const txt=ta.value;try{await navigator.clipboard.writeText(txt);btn.textContent='Copiado';setTimeout(()=>btn.textContent=id==='exp-json'?'Copiar JSON':'Copiar CSV',1500)}catch(e){$('#expwrap').style.display='block';ta.focus();ta.select();btn.textContent='Selecione e copie'}}
 
 renderStart();
+window.__FE.dev={zinv,MODULES,INDICATORS,computeSummary,NB3,NB_LETTERS,nbCounts,genNbackFixed,nbackMetrics,nback3Metrics,LV,MX,SR,FD,ROT,itemRng,makeStair,fitTheta,genMatrix,mxEq,mxPart,mxCell,mxMatrixHtml,mxPaletteHtml,srNum,srLet,genSeries,srPredict,genFold,foldSvg,foldPadInner,foldItemHtml,genFigure,figCanon,figMirror,genRotTrial,rotSvg,rotList,powerMetrics,rotMetrics};
 </script>
 </body>
 </html>
